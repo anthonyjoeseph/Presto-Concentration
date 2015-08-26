@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		9500E3DE1B8DFE410037973F /* AnimatedStaff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */; };
+		958C76D01B8E09FD00221004 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958C76CF1B8E09FD00221004 /* Note.swift */; };
+		958C76E11B8E0D4200221004 /* KeyBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958C76E01B8E0D4200221004 /* KeyBase.swift */; };
+		958C76E31B8E0EFB00221004 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958C76E21B8E0EFB00221004 /* KeyboardView.swift */; };
+		958C76E51B8E121C00221004 /* KeyRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958C76E41B8E121C00221004 /* KeyRange.swift */; };
 		95F05B8C1B85073D0022F04C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F05B8B1B85073D0022F04C /* AppDelegate.swift */; };
 		95F05B8E1B85073D0022F04C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F05B8D1B85073D0022F04C /* ViewController.swift */; };
 		95F05B911B85073D0022F04C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95F05B8F1B85073D0022F04C /* Main.storyboard */; };
@@ -28,6 +32,10 @@
 
 /* Begin PBXFileReference section */
 		9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedStaff.swift; sourceTree = "<group>"; };
+		958C76CF1B8E09FD00221004 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		958C76E01B8E0D4200221004 /* KeyBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBase.swift; sourceTree = "<group>"; };
+		958C76E21B8E0EFB00221004 /* KeyboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
+		958C76E41B8E121C00221004 /* KeyRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyRange.swift; sourceTree = "<group>"; };
 		95F05B861B85073D0022F04C /* Presto Concentration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Presto Concentration.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		95F05B8A1B85073D0022F04C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95F05B8B1B85073D0022F04C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +90,10 @@
 				95F05B8B1B85073D0022F04C /* AppDelegate.swift */,
 				95F05B8D1B85073D0022F04C /* ViewController.swift */,
 				9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */,
+				958C76CF1B8E09FD00221004 /* Note.swift */,
+				958C76E41B8E121C00221004 /* KeyRange.swift */,
+				958C76E01B8E0D4200221004 /* KeyBase.swift */,
+				958C76E21B8E0EFB00221004 /* KeyboardView.swift */,
 				95F05B8F1B85073D0022F04C /* Main.storyboard */,
 				95F05B921B85073D0022F04C /* Images.xcassets */,
 				95F05B941B85073D0022F04C /* LaunchScreen.xib */,
@@ -218,6 +230,10 @@
 				95F05B8E1B85073D0022F04C /* ViewController.swift in Sources */,
 				9500E3DE1B8DFE410037973F /* AnimatedStaff.swift in Sources */,
 				95F05B8C1B85073D0022F04C /* AppDelegate.swift in Sources */,
+				958C76E31B8E0EFB00221004 /* KeyboardView.swift in Sources */,
+				958C76E11B8E0D4200221004 /* KeyBase.swift in Sources */,
+				958C76D01B8E09FD00221004 /* Note.swift in Sources */,
+				958C76E51B8E121C00221004 /* KeyRange.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
