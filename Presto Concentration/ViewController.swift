@@ -12,7 +12,7 @@ import SpriteKit
 class ViewController: UIViewController {
     
     @IBOutlet var skViewOp:SKView?
-    
+    @IBOutlet var keyboardView:KeyboardView?
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -24,7 +24,11 @@ class ViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .ResizeFill
         skView.presentScene(scene)
+        
+        //keyboard
+        self.keyboardView?.pressedNotesFunc = scene.notesPressed
     }
+    
 
     override func prefersStatusBarHidden() -> Bool {
         return true

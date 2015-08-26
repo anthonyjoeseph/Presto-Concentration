@@ -39,6 +39,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="keyboardView" destination="e33-Ka-Dam" id="NFG-0p-GK4"/>
                         <outlet property="skViewOp" destination="1Hl-JV-Cxe" id="VfV-AP-FNL"/>
                     </connections>
                 </viewController>

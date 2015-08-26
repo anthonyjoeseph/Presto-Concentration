@@ -18,4 +18,9 @@ class AnimatedStaff: SKScene {
         staff.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(staff)
     }
+    
+    func notesPressed(notes:Set<Note>){
+        println("GOD HELP US");
+    }
+    
 }
