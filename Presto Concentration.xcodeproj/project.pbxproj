@@ -274,6 +274,7 @@
 		958C78F31B8E509200221004 /* 8B.aif in Resources */ = {isa = PBXBuildFile; fileRef = 958C77ED1B8E509200221004 /* 8B.aif */; };
 		958C78F41B8E509200221004 /* 8C.aif in Resources */ = {isa = PBXBuildFile; fileRef = 958C77EE1B8E509200221004 /* 8C.aif */; };
 		958C78F51B8E509200221004 /* renameIt.sh in Resources */ = {isa = PBXBuildFile; fileRef = 958C77EF1B8E509200221004 /* renameIt.sh */; };
+		958C78F71B8E534600221004 /* NoteSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958C78F61B8E534600221004 /* NoteSprite.swift */; };
 		95F05B8C1B85073D0022F04C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F05B8B1B85073D0022F04C /* AppDelegate.swift */; };
 		95F05B8E1B85073D0022F04C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F05B8D1B85073D0022F04C /* ViewController.swift */; };
 		95F05B911B85073D0022F04C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95F05B8F1B85073D0022F04C /* Main.storyboard */; };
@@ -560,6 +561,7 @@
 		958C77ED1B8E509200221004 /* 8B.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = 8B.aif; sourceTree = "<group>"; };
 		958C77EE1B8E509200221004 /* 8C.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = 8C.aif; sourceTree = "<group>"; };
 		958C77EF1B8E509200221004 /* renameIt.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = renameIt.sh; sourceTree = "<group>"; };
+		958C78F61B8E534600221004 /* NoteSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteSprite.swift; sourceTree = "<group>"; };
 		95F05B861B85073D0022F04C /* Presto Concentration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Presto Concentration.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		95F05B8A1B85073D0022F04C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95F05B8B1B85073D0022F04C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -907,6 +909,7 @@
 				95F05B8B1B85073D0022F04C /* AppDelegate.swift */,
 				95F05B8D1B85073D0022F04C /* ViewController.swift */,
 				9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */,
+				958C78F61B8E534600221004 /* NoteSprite.swift */,
 				958C76CF1B8E09FD00221004 /* Note.swift */,
 				958C76E41B8E121C00221004 /* KeyRange.swift */,
 				958C76E01B8E0D4200221004 /* KeyBase.swift */,
@@ -1307,6 +1310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				958C78F71B8E534600221004 /* NoteSprite.swift in Sources */,
 				95F05B8E1B85073D0022F04C /* ViewController.swift in Sources */,
 				9500E3DE1B8DFE410037973F /* AnimatedStaff.swift in Sources */,
 				95F05B8C1B85073D0022F04C /* AppDelegate.swift in Sources */,

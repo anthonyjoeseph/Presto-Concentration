@@ -8,9 +8,21 @@
 
 import Foundation
 
+enum NoteLetter:String{
+    case A = "A"
+    case B = "B"
+    case C = "C"
+    case D = "D"
+    case E = "E"
+    case F = "F"
+    case G = "G"
+}
+
 class Note:NSObject{
     let absoluteNote:Int
     let name:String
+    let octave:Int
+    let noteLetter:NoteLetter
     let isIvory:Bool
     
     init(absoluteNote:Int){
@@ -18,56 +30,60 @@ class Note:NSObject{
         
         //determine the note's name
         let noteInOctave:Int = absoluteNote % 12
-        let octave:Int = absoluteNote / 12
-        
-        var mutableName:String = String(octave)
         
         switch(noteInOctave){
         case 0:
             isIvory = true
-            mutableName += "A"
+            self.noteLetter = NoteLetter.A
         case 1:
             isIvory = false
-            mutableName += "As"
+            self.noteLetter = NoteLetter.A
         case 2:
             isIvory = true
-            mutableName += "B"
+            self.noteLetter = NoteLetter.B
         case 3:
             isIvory = true
-            mutableName += "C"
+            self.noteLetter = NoteLetter.C
         case 4:
             isIvory = false
-            mutableName += "Cs"
+            self.noteLetter = NoteLetter.C
         case 5:
             isIvory = true
-            mutableName += "D"
+            self.noteLetter = NoteLetter.D
         case 6:
             isIvory = false
-            mutableName += "Ds"
+            self.noteLetter = NoteLetter.D
         case 7:
             isIvory = true
-            mutableName += "E"
+            self.noteLetter = NoteLetter.E
         case 8:
             isIvory = true
-            mutableName += "F"
+            self.noteLetter = NoteLetter.F
         case 9:
             isIvory = false
-            mutableName += "Fs"
+            self.noteLetter = NoteLetter.F
         case 10:
             isIvory = true
-            mutableName += "G"
+            self.noteLetter = NoteLetter.G
         case 11:
             isIvory = false
-            mutableName += "Gs"
+            self.noteLetter = NoteLetter.G
         default:
             isIvory = true
-            mutableName += "A"
+            self.noteLetter = NoteLetter.A
         }
-        name = mutableName
+        
+        
+        self.octave = absoluteNote / 12
+        name = "\(self.octave)" + self.noteLetter.rawValue + ( isIvory ? "" : "s" )
     }
     
     func previousNote() -> Note{
         return Note(absoluteNote: absoluteNote-2)
+    }
+    
+    func isSharp() -> Bool{
+        return isIvory
     }
     
 }
