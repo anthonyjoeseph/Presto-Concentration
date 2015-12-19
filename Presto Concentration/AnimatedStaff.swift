@@ -12,6 +12,7 @@ import SpriteKit
 class AnimatedStaff: SKScene {
     
     let staff = SKSpriteNode(imageNamed: "Music-Staff")
+    private var ledgerLineSpace:CGFloat = 0.0
     
     override func didMoveToView(view: SKView) {
         backgroundColor = SKColor.whiteColor()
@@ -23,7 +24,9 @@ class AnimatedStaff: SKScene {
         let noteZone = SKSpriteNode(imageNamed: "NoteZone")
         noteZone.size = CGSize(width: size.width/6, height: size.height)
         noteZone.position = CGPoint(x: size.width/2, y: size.height/2)
-        noteZone.zPosition = 1.0
+        noteZone.zPosition = 2.0
+        
+        ledgerLineSpace = staff.size.height * 0.245
         
         addChild(staff)
         addChild(noteZone)
@@ -31,38 +34,26 @@ class AnimatedStaff: SKScene {
     }
     
     func addNote(note:Note, reachCenterBy:NSTimeInterval){
+        
+        let ivoryFloorNote:Note
+        if !note.isIvory {
+            ivoryFloorNote = Note(absoluteNote: note.absoluteNote-1);
+        }else{
+            ivoryFloorNote = note
+        }
         let noteSprite:SKSpriteNode = NoteSprite(imageNamed:"wholeNote")
         let oldNoteHeight = noteSprite.size.width
-        let newNoteHeight = staff.size.height/4
-        noteSprite.xScale = newNoteHeight/oldNoteHeight
+        noteSprite.xScale = ledgerLineSpace/oldNoteHeight
         noteSprite.yScale = noteSprite.xScale
-        noteSprite.zPosition = 2.0
+        noteSprite.zPosition = 1.0
         
-        /*let staffPosition:Int
+        let bFourPosition = size.height/2
+        let bFour:Note = Note(absoluteNote: 50)
         
-        switch(note.noteLetter){
-        case NoteLetter.A:
-            staffPosition = 0
-        case NoteLetter.B:
-            staffPosition = 1
-        case NoteLetter.C:
-            staffPosition = 2
-        case NoteLetter.D:
-            staffPosition = 3
-        case NoteLetter.E:
-            staffPosition = 4
-        case NoteLetter.F:
-            staffPosition = 5
-        case NoteLetter.G:
-            staffPosition = 6
-        default:
-            staffPosition = 0
-        }
+        let ivoryDistance:CGFloat = CGFloat(bFour.ivoryDistance(ivoryFloorNote))
+        let noteSpriteY:CGFloat = bFourPosition + ivoryDistance * (ledgerLineSpace/2)
         
-        let noteHeight = noteSprite.size.height
-        let middleCPosition = size.height/2*/
-        
-        noteSprite.position = CGPoint(x:size.width+(noteSprite.size.width/2), y:size.height/2)
+        noteSprite.position = CGPoint(x:size.width+(noteSprite.size.width/2), y:noteSpriteY)
         
         let actionMove = SKAction.moveTo(CGPoint(x: -noteSprite.size.width/2, y: noteSprite.position.y), duration: reachCenterBy*2)
         let actionMoveDone = SKAction.removeFromParent()
@@ -73,7 +64,7 @@ class AnimatedStaff: SKScene {
     
     func notesPressed(notes:Set<Note>){
         for note:Note in notes{
-            addNote(note, reachCenterBy: 1.0)
+            addNote(note, reachCenterBy: 9.5)
         }
     }
     

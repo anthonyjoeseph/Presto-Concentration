@@ -17,7 +17,6 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let skView = skViewOp!
-        let testFrame = skView.frame
         let scene = AnimatedStaff(size: skView.bounds.size)
         skView.showsFPS = true
         skView.showsNodeCount = true

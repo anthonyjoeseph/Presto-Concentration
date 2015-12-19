@@ -17,6 +17,7 @@ class NoteSprite: SKSpriteNode{
         }
         set(newNote){
             self.note = newNote
+            addAccidentals()
             addStem()
             addLedgerLines()
         }
@@ -24,11 +25,15 @@ class NoteSprite: SKSpriteNode{
     
     init(imageNamed:String){
         let texture = SKTexture(imageNamed:imageNamed)
-        super.init(texture: texture, color: nil, size: texture.size())
+        super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func addAccidentals(){
+        
     }
     
     func addStem(){

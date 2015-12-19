@@ -83,7 +83,23 @@ class Note:NSObject{
     }
     
     func isSharp() -> Bool{
-        return isIvory
+        return !isIvory
     }
     
+    func ivoryDistance(comparisonNote:Note) -> Int{
+        if self.absoluteNote == comparisonNote.absoluteNote {
+            return 0
+        }
+        if self.absoluteNote > comparisonNote.absoluteNote {
+            return -1 * comparisonNote.ivoryDistance(self)
+        }
+        var ivoriesBetween = 0
+        for currentAbsoluteNote in self.absoluteNote ... comparisonNote.absoluteNote-1 {
+            let currentNote = Note(absoluteNote: currentAbsoluteNote)
+            if currentNote.isIvory {
+                ivoriesBetween++
+            }
+        }
+        return ivoriesBetween
+    }
 }

@@ -26,7 +26,7 @@ class KeyBase: UIImageView{
         }
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         self.note = Note(absoluteNote: 0)
         super.init(coder: aDecoder)
     }

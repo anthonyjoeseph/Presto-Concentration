@@ -11,7 +11,7 @@ import UIKit
 
 class KeyboardView: UIView{
     
-    private let ivoryToEbonyWidth:CGFloat = 0.5
+    private let ivoryToEbonyWidth:CGFloat = 0.7
     private let ivoryToEbonyHeight:CGFloat = 0.5
     
     var keyRange:KeyRange
@@ -25,16 +25,14 @@ class KeyboardView: UIView{
     
     var pressedNotesFunc: (Set<Note>) -> Void
 
-    required init(coder aDecoder: NSCoder) {
-        self.keyRange = KeyRange(lowNote: Note(absoluteNote: 39), highNote: Note(absoluteNote: 55))
+    required init?(coder aDecoder: NSCoder) {
+        self.keyRange = KeyRange(lowNote: Note(absoluteNote: 39), highNote: Note(absoluteNote: 53))
         //empty, client can override
         self.pressedNotesFunc =  {( n:Set<Note> ) -> Void in }
         super.init(coder: aDecoder)
     }
     
     func addKey(note:Note){
-        let keyImage:UIImage
-        let pressedKeyImage:UIImage
         
         let newKey:KeyBase = KeyBase(note: note)
         keys.append(newKey)
@@ -61,7 +59,7 @@ class KeyboardView: UIView{
     }
     
     func removeAllKeysFromView(){
-        for view:UIView in self.subviews as! Array<UIView> {
+        for view:UIView in self.subviews {
             view.removeFromSuperview()
         }
         self.keys.removeAll(keepCapacity: true)
@@ -82,12 +80,12 @@ class KeyboardView: UIView{
         }
     }
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         var pressedNotes:Set<Note> = Set<Note>()
         for keyIndex in 0 ... self.keys.count-1 {
             let key:KeyBase = self.keys[keyIndex]
             var keyIsPressed:Bool = false
-            for touch:UITouch in touches as! Set<UITouch> {
+            for touch:UITouch in touches {
                 let location:CGPoint = touch.locationInView(self)
                 if CGRectContainsPoint(key.frame, location) {
                     var ignore:Bool = false
@@ -125,12 +123,12 @@ class KeyboardView: UIView{
         self.pressedNotesFunc(pressedNotes)
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.touchesMoved(touches, withEvent: event)
     }
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for keyImage:UIImageView in keys {
-            for touch:UITouch in touches as! Set<UITouch> {
+            for touch:UITouch in touches {
                 let location:CGPoint = touch.locationInView(self)
                 if CGRectContainsPoint(keyImage.frame, location) {
                     if (touch.phase == UITouchPhase.Ended ||
