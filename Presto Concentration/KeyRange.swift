@@ -9,46 +9,46 @@
 import Foundation
 
 class KeyRange:NSObject {
-    var notes:Array<Note>
+    var pitches:Array<Pitch>
     let numIvoryKeys:Int
     
-    init(lowNote:Note, highNote:Note){
-        notes = Array<Note>()
+    init(lowPitch:Pitch, highPitch:Pitch){
+        pitches = Array<Pitch>()
         var numIvoryKeysMutable:Int = 0
-        for currentAbsNote in lowNote.absoluteNote ... highNote.absoluteNote {
-            let newNote = Note(absoluteNote:currentAbsNote)
-            notes.append(newNote)
-            if(newNote.isIvory){
+        for currentAbsPitch in lowPitch.absolutePitch ... highPitch.absolutePitch {
+            let newPitch = Pitch(absolutePitch:currentAbsPitch)
+            pitches.append(newPitch)
+            if(Keyboard.isIvory(newPitch)){
                 numIvoryKeysMutable++
             }
         }
         numIvoryKeys = numIvoryKeysMutable
     }
     
-    func lowNote() -> Note{
-        return notes.first!
+    func lowPitch() -> Pitch{
+        return pitches.first!
     }
     
-    func highNote() -> Note{
-        return notes.last!
+    func highPitch() -> Pitch{
+        return pitches.last!
     }
     
-    func ivoryIndex(midNote:Note) -> Int?{
-        let lowNote = self.lowNote()
-        let highNote = self.highNote()
-        if(lowNote.absoluteNote <= midNote.absoluteNote
-            && midNote.absoluteNote <= highNote.absoluteNote){
-                var ivoryNoteCount:Int = 0
-                if lowNote.absoluteNote < midNote.absoluteNote {
-                    for currentNoteAbs in lowNote.absoluteNote ... midNote.absoluteNote - 1 {
-                        let currentNoteIndex = currentNoteAbs - lowNote.absoluteNote
-                        let currentNote:Note = self.notes[currentNoteIndex]
-                        if currentNote.isIvory {
-                            ivoryNoteCount++
+    func ivoryIndex(midPitch:Pitch) -> Int?{
+        let lowPitch = self.lowPitch()
+        let highPitch = self.highPitch()
+        if(lowPitch.absolutePitch <= midPitch.absolutePitch
+            && midPitch.absolutePitch <= highPitch.absolutePitch){
+                var ivoryPitchCount:Int = 0
+                if lowPitch.absolutePitch < midPitch.absolutePitch {
+                    for currentPitchAbs in lowPitch.absolutePitch ... midPitch.absolutePitch - 1 {
+                        let currentPitchIndex = currentPitchAbs - lowPitch.absolutePitch
+                        let currentPitch:Pitch = self.pitches[currentPitchIndex]
+                        if Keyboard.isIvory(currentPitch){
+                            ivoryPitchCount++
                         }
                     }
                 }
-                return ivoryNoteCount
+                return ivoryPitchCount
         }
         return nil
     }

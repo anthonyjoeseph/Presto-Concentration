@@ -23,29 +23,29 @@ class KeyboardView: UIView{
     private var ebonyWidth:CGFloat = 0
     private var ebonyHeight:CGFloat = 0
     
-    var pressedNotesFunc: (Set<Note>) -> Void
+    var pressedPitchesFunc: (Set<Pitch>) -> Void
 
     required init?(coder aDecoder: NSCoder) {
-        self.keyRange = KeyRange(lowNote: Note(absoluteNote: 39), highNote: Note(absoluteNote: 53))
+        self.keyRange = KeyRange(lowPitch: Pitch(absolutePitch: 0), highPitch: Pitch(absolutePitch: 0))
         //empty, client can override
-        self.pressedNotesFunc =  {( n:Set<Note> ) -> Void in }
+        self.pressedPitchesFunc =  {( n:Set<Pitch> ) -> Void in }
         super.init(coder: aDecoder)
     }
     
-    func addKey(note:Note){
+    func addKey(pitch:Pitch){
         
-        let newKey:KeyBase = KeyBase(note: note)
+        let newKey:KeyBase = KeyBase(pitch: pitch)
         keys.append(newKey)
         
         var keyFrame:CGRect = CGRectZero
-        if note.isIvory {
+        if Keyboard.isIvory(pitch) {
             keyFrame.size.width = ivoryWidth
             keyFrame.size.height = ivoryHeight
-            keyFrame.origin.x = ivoryWidth * CGFloat(self.keyRange.ivoryIndex(note)!)
+            keyFrame.origin.x = ivoryWidth * CGFloat(self.keyRange.ivoryIndex(pitch)!)
         }else{
             keyFrame.size.width = ebonyWidth
             keyFrame.size.height = ebonyHeight
-            keyFrame.origin.x = ( ivoryWidth * CGFloat(self.keyRange.ivoryIndex(note)!) ) - (ebonyWidth/2)
+            keyFrame.origin.x = ( ivoryWidth * CGFloat(self.keyRange.ivoryIndex(pitch)!) ) - (ebonyWidth/2)
         }
         newKey.frame = keyFrame
         
@@ -53,7 +53,7 @@ class KeyboardView: UIView{
         newKey.userInteractionEnabled = false
         
         self.addSubview(newKey)
-        if note.isIvory {
+        if Keyboard.isIvory(pitch) {
             self.sendSubviewToBack(newKey)
         }
     }
@@ -75,13 +75,13 @@ class KeyboardView: UIView{
         ebonyWidth = ivoryWidth * ivoryToEbonyWidth
         ebonyHeight = ivoryHeight * ivoryToEbonyHeight
         
-        for note in self.keyRange.notes {
-            self.addKey(note)
+        for pitch in self.keyRange.pitches {
+            self.addKey(pitch)
         }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        var pressedNotes:Set<Note> = Set<Note>()
+        var pressedPitches:Set<Pitch> = Set<Pitch>()
         for keyIndex in 0 ... self.keys.count-1 {
             let key:KeyBase = self.keys[keyIndex]
             var keyIsPressed:Bool = false
@@ -89,17 +89,17 @@ class KeyboardView: UIView{
                 let location:CGPoint = touch.locationInView(self)
                 if CGRectContainsPoint(key.frame, location) {
                     var ignore:Bool = false
-                    if key.note.isIvory {
+                    if Keyboard.isIvory(key.pitch) {
                         if keyIndex > 0 {
                             let previousKey:KeyBase = self.keys[keyIndex-1]
-                            if (!previousKey.note.isIvory &&
+                            if (!Keyboard.isIvory(previousKey.pitch) &&
                                 CGRectContainsPoint(previousKey.frame, location)){
                                     ignore = true
                             }
                         }
                         if keyIndex < self.keys.count-1 {
                             let nextKey:KeyBase = self.keys[keyIndex+1]
-                            if(!nextKey.note.isIvory &&
+                            if(!Keyboard.isIvory(nextKey.pitch) &&
                                 CGRectContainsPoint(nextKey.frame, location)){
                                     ignore = true
                             }
@@ -110,7 +110,7 @@ class KeyboardView: UIView{
                         keyIsPressed = true
                         if !key.highlighted {
                             key.highlighted = true
-                            pressedNotes.insert(key.note)
+                            pressedPitches.insert(key.pitch)
                         }
                     }
                 }
@@ -120,7 +120,7 @@ class KeyboardView: UIView{
             }
         }
         
-        self.pressedNotesFunc(pressedNotes)
+        self.pressedPitchesFunc(pressedPitches)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
