@@ -38,6 +38,13 @@ class NoteSprite: SKSpriteNode{
         letterLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
         letterLabel.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
         letterLabel.position = CGPoint(x: self.size.width, y: 0)
+        
+        let background:SKSpriteNode =
+            SKSpriteNode(color: UIColor.whiteColor(),
+                size: CGSize(width: letterLabel.frame.size.width, height: letterLabel.frame.size.height));
+        background.position = CGPointMake(0, 0);
+        letterLabel.addChild(background)
+        
         self.addChild(letterLabel)
     }
     

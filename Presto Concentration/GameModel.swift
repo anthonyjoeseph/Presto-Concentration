@@ -16,41 +16,91 @@ enum DifficultyLevel{
     case Beginner, Intermediate, Expert
 }
 
-class GameModel{
+class GameModel: NSObject{
     static let trebleKeyRange:KeyRange = KeyRange(lowPitch: Pitch(absolutePitch: 39), highPitch: Pitch(absolutePitch: 54))
     static let bassKeyRange:KeyRange = KeyRange(lowPitch: Pitch(absolutePitch: 27), highPitch: Pitch(absolutePitch: 42))
-    static let defaultBPM:Int = 60
+    static let defaultBPM:Int = 120
+    static let secondsInMinute:Int = 60
     
-    var currentDifficultyLevel:DifficultyLevel
+    var currentTimer:NSTimer = NSTimer()
+    var currentDifficultyLevel:DifficultyLevel?{
+        didSet {
+            if let definiteNewDifficultyLevel = self.currentDifficultyLevel {
+                gameCountState = GameCountStateMachine(difficultyLevel: definiteNewDifficultyLevel)
+                gameCountState.areNotesCleared = self.areNotesCleared
+            }
+        }
+    }
+    var gameCountState:GameCountStateMachine
     var currentBPM:Int
     var currentClef:Clef
+    var previousKeySignature:MajorKeySignature
     var currentKeySignature:MajorKeySignature
     var currentKeyRange:KeyRange
     
-    init(){
-        self.currentDifficultyLevel = DifficultyLevel.Beginner
-        self.currentBPM = GameModel.defaultBPM
-        self.currentClef = Clef(isTrebleClef: false)
-        self.currentKeySignature = MajorKeySignature(keyLetter: PitchLetter.B, keyAccidental: Accidental.None)!
-        self.currentKeyRange = GameModel.bassKeyRange
+    var updateStaffWithGameElement:(GameElement) -> Void
+    var areNotesCleared: (Void) -> Bool
+    
+    convenience override init(){
+        self.init(updateStaffWithGameElement: {(GameElement)->Void in}, areNotesCleared: {(Void) -> Bool in return true})
     }
     
-    func pickNewElement() -> GameElement{
-        let random = arc4random_uniform(100)
-        if(random < 80){
-            return GameElement.Note
-        }else if(random < 95){
-            return GameElement.Clef
-        }else if(random < 100){
-            return GameElement.KeySignature
-        }else{
-            return GameElement.Tempo
+    init(updateStaffWithGameElement:(GameElement) -> Void, areNotesCleared: (Void) -> Bool){
+        self.updateStaffWithGameElement = updateStaffWithGameElement
+        self.areNotesCleared = areNotesCleared
+        
+        self.currentBPM = GameModel.defaultBPM
+        self.currentClef = Clef(isTrebleClef: true)
+        self.currentKeySignature = MajorKeySignature(keyLetter: PitchLetter.C, keyAccidental: Accidental.None)!
+        self.previousKeySignature = MajorKeySignature(keyLetter: PitchLetter.C, keyAccidental: Accidental.None)!
+        self.currentKeyRange = GameModel.trebleKeyRange
+        self.gameCountState = GameCountStateMachine(difficultyLevel: DifficultyLevel.Beginner)
+        
+        super.init()
+        
+        self.resetTimer()
+    }
+    
+    func update(){
+        if(!self.gameCountState.isWaiting()){
+            let newGameElement = self.gameCountState.pickNewElement()
+            switch(newGameElement){
+            case GameElement.Clef:
+                self.currentClef = newClef()
+                if(self.currentClef.isTrebleClef){
+                    self.currentKeyRange = GameModel.trebleKeyRange
+                }else{
+                    self.currentKeyRange = GameModel.bassKeyRange
+                }
+                break
+            case GameElement.KeySignature:
+                self.previousKeySignature = self.currentKeySignature
+                self.currentKeySignature = newKeySignature()
+                break
+            case GameElement.Tempo:
+                self.currentBPM = newBPM()
+                self.resetTimer()
+                break
+            default:
+                break
+            }
+            self.updateStaffWithGameElement(newGameElement)
         }
+        self.gameCountState.updateCycle()
+    }
+    
+    func resetTimer(){
+        self.currentTimer.invalidate()
+        let timeBetweenBeats:Double = Double(GameModel.secondsInMinute)/Double(self.currentBPM)
+        self.currentTimer = NSTimer.scheduledTimerWithTimeInterval(timeBetweenBeats, target: self, selector: "update", userInfo: nil, repeats: true)
+    }
+    func stopTimer(){
+        self.currentTimer.invalidate()
     }
     
     func newNote() -> Note{
         let randomPitch:Pitch
-        if(self.currentDifficultyLevel == DifficultyLevel.Beginner){
+        if(self.gameCountState.isNewNoteInKey()){
             randomPitch = randomPitchInKey()
         }else{
             randomPitch = anyRandomPitch()
@@ -72,17 +122,17 @@ class GameModel{
         return randomPitchInKey()
     }
     
-    func changeClef() -> Clef{
-        self.currentClef = Clef(isTrebleClef: !self.currentClef.isTrebleClef)
+    func newClef() -> Clef{
+        let createdClef = Clef(isTrebleClef: !self.currentClef.isTrebleClef)
         if(self.currentClef.isTrebleClef){
             self.currentKeyRange = GameModel.trebleKeyRange
         }else{
             self.currentKeyRange = GameModel.bassKeyRange
         }
-        return self.currentClef
+        return createdClef
     }
     
-    func changeKeySignature() -> MajorKeySignature{
+    func newKeySignature() -> MajorKeySignature{
         let newKeyLetter:PitchLetter
         let randomLetterIndex = arc4random_uniform(7)
         switch(randomLetterIndex){
@@ -145,8 +195,7 @@ class GameModel{
         return self.currentKeySignature
     }
     
-    func changeBPM() -> Int{
-        self.currentBPM = 60 + (Int(arc4random_uniform(10)) * 10)
-        return self.currentBPM
+    func newBPM() -> Int{
+        return self.currentBPM + 5
     }
 }

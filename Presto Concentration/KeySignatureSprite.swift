@@ -11,8 +11,9 @@ import SpriteKit
 
 class KeySignatureSprite: SKSpriteNode{
     
-    var accidentalIncrements:[Int]
-    var accidental:Accidental
+    private var accidentalIncrements:[Int]
+    private var accidental:Accidental
+    private var overheadLetter:SKLabelNode? = nil
     
     init(accidentalIncrements:[Int], accidental:Accidental){
         self.accidentalIncrements = accidentalIncrements
@@ -50,5 +51,27 @@ class KeySignatureSprite: SKSpriteNode{
             currentXPosition += CGFloat(30)
             self.addChild(accidentalSprite)
         }
+    }
+    
+    func addOverheadLetter(letter:PitchLetter, accidental:Accidental?){
+        let letterLabel:SKLabelNode = SKLabelNode(fontNamed: "Arial")
+        var keyText = letter.rawValue
+        if let definiteAccidentalText = accidental?.rawValue {
+            keyText += definiteAccidentalText
+        }
+        letterLabel.text = keyText
+        letterLabel.fontColor = UIColor.blackColor()
+        letterLabel.fontSize = 50
+        letterLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        letterLabel.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+        letterLabel.position = CGPoint(x: 0, y: 120)
+        
+        self.overheadLetter = letterLabel
+        
+        self.addChild(letterLabel)
+    }
+    
+    func removeOverheadLetter(){
+        self.overheadLetter?.removeFromParent()
     }
 }

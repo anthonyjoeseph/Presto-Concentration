@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9500E3DE1B8DFE410037973F /* AnimatedStaff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */; };
+		95088E391C437BED009ADED7 /* KeySignatureChangingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95088E381C437BED009ADED7 /* KeySignatureChangingState.swift */; };
+		95088E3B1C437BF7009ADED7 /* TempoChangingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95088E3A1C437BF7009ADED7 /* TempoChangingState.swift */; };
+		95088E3D1C437C01009ADED7 /* NoteAndClefState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95088E3C1C437C01009ADED7 /* NoteAndClefState.swift */; };
 		953F12701C2F9D7A00DFA922 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F126F1C2F9D7A00DFA922 /* Keyboard.swift */; };
 		953F12721C30A85C00DFA922 /* KeySignatureSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F12711C30A85C00DFA922 /* KeySignatureSprite.swift */; };
 		953F12741C3385C600DFA922 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F12731C3385C600DFA922 /* GameModel.swift */; };
@@ -32,6 +35,7 @@
 		955F01391C26173B000434AD /* GSmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01271C26173B000434AD /* GSmaj.plist */; };
 		955F013B1C274300000434AD /* MajorKeySignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955F013A1C274300000434AD /* MajorKeySignature.swift */; };
 		955F013D1C28989E000434AD /* Pitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955F013C1C28989E000434AD /* Pitch.swift */; };
+		9563F68A1C435E70003130CB /* GameCountStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9563F6891C435E70003130CB /* GameCountStateMachine.swift */; };
 		958C76D01B8E09FD00221004 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958C76CF1B8E09FD00221004 /* Note.swift */; };
 		958C76E11B8E0D4200221004 /* KeyBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958C76E01B8E0D4200221004 /* KeyBase.swift */; };
 		958C76E31B8E0EFB00221004 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958C76E21B8E0EFB00221004 /* KeyboardView.swift */; };
@@ -146,6 +150,9 @@
 
 /* Begin PBXFileReference section */
 		9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedStaff.swift; sourceTree = "<group>"; };
+		95088E381C437BED009ADED7 /* KeySignatureChangingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeySignatureChangingState.swift; sourceTree = "<group>"; };
+		95088E3A1C437BF7009ADED7 /* TempoChangingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempoChangingState.swift; sourceTree = "<group>"; };
+		95088E3C1C437C01009ADED7 /* NoteAndClefState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteAndClefState.swift; sourceTree = "<group>"; };
 		953F126F1C2F9D7A00DFA922 /* Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		953F12711C30A85C00DFA922 /* KeySignatureSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeySignatureSprite.swift; sourceTree = "<group>"; };
 		953F12731C3385C600DFA922 /* GameModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
@@ -170,6 +177,7 @@
 		955F01271C26173B000434AD /* GSmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GSmaj.plist; sourceTree = "<group>"; };
 		955F013A1C274300000434AD /* MajorKeySignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MajorKeySignature.swift; sourceTree = "<group>"; };
 		955F013C1C28989E000434AD /* Pitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pitch.swift; sourceTree = "<group>"; };
+		9563F6891C435E70003130CB /* GameCountStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCountStateMachine.swift; sourceTree = "<group>"; };
 		958C76CF1B8E09FD00221004 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		958C76E01B8E0D4200221004 /* KeyBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBase.swift; sourceTree = "<group>"; };
 		958C76E21B8E0EFB00221004 /* KeyboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
@@ -294,6 +302,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		953A44F91C440C7700B391F1 /* Game Count State Machine */ = {
+			isa = PBXGroup;
+			children = (
+				9563F6891C435E70003130CB /* GameCountStateMachine.swift */,
+				95088E3C1C437C01009ADED7 /* NoteAndClefState.swift */,
+				95088E381C437BED009ADED7 /* KeySignatureChangingState.swift */,
+				95088E3A1C437BF7009ADED7 /* TempoChangingState.swift */,
+			);
+			name = "Game Count State Machine";
+			sourceTree = "<group>";
+		};
+		953A44FA1C440C9800B391F1 /* Music Theory */ = {
+			isa = PBXGroup;
+			children = (
+				95966D481B8F4E0100326C7B /* Clef.swift */,
+				955F013A1C274300000434AD /* MajorKeySignature.swift */,
+				953F126F1C2F9D7A00DFA922 /* Keyboard.swift */,
+				958C76CF1B8E09FD00221004 /* Note.swift */,
+				955F013C1C28989E000434AD /* Pitch.swift */,
+				958C76E41B8E121C00221004 /* KeyRange.swift */,
+			);
+			name = "Music Theory";
+			sourceTree = "<group>";
+		};
 		955F01131C261372000434AD /* Key Signatures */ = {
 			isa = PBXGroup;
 			children = (
@@ -448,16 +480,12 @@
 				953F12771C3387A300DFA922 /* MainMenuViewController.swift */,
 				953F12751C33876900DFA922 /* GameViewController.swift */,
 				953F12731C3385C600DFA922 /* GameModel.swift */,
+				953A44F91C440C7700B391F1 /* Game Count State Machine */,
 				9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */,
 				958C78F61B8E534600221004 /* NoteSprite.swift */,
 				953F12711C30A85C00DFA922 /* KeySignatureSprite.swift */,
 				953F12791C33901900DFA922 /* TempoMarkingSprite.swift */,
-				95966D481B8F4E0100326C7B /* Clef.swift */,
-				955F013A1C274300000434AD /* MajorKeySignature.swift */,
-				953F126F1C2F9D7A00DFA922 /* Keyboard.swift */,
-				958C76CF1B8E09FD00221004 /* Note.swift */,
-				955F013C1C28989E000434AD /* Pitch.swift */,
-				958C76E41B8E121C00221004 /* KeyRange.swift */,
+				953A44FA1C440C9800B391F1 /* Music Theory */,
 				958C76E01B8E0D4200221004 /* KeyBase.swift */,
 				958C76E21B8E0EFB00221004 /* KeyboardView.swift */,
 				95F05B8F1B85073D0022F04C /* Main.storyboard */,
@@ -705,6 +733,7 @@
 				9500E3DE1B8DFE410037973F /* AnimatedStaff.swift in Sources */,
 				95966D491B8F4E0100326C7B /* Clef.swift in Sources */,
 				95F05B8C1B85073D0022F04C /* AppDelegate.swift in Sources */,
+				95088E3B1C437BF7009ADED7 /* TempoChangingState.swift in Sources */,
 				953F12741C3385C600DFA922 /* GameModel.swift in Sources */,
 				953F12701C2F9D7A00DFA922 /* Keyboard.swift in Sources */,
 				953F12781C3387A300DFA922 /* MainMenuViewController.swift in Sources */,
@@ -713,9 +742,12 @@
 				953F12721C30A85C00DFA922 /* KeySignatureSprite.swift in Sources */,
 				958C76E11B8E0D4200221004 /* KeyBase.swift in Sources */,
 				953F12761C33876900DFA922 /* GameViewController.swift in Sources */,
+				95088E3D1C437C01009ADED7 /* NoteAndClefState.swift in Sources */,
 				958C76D01B8E09FD00221004 /* Note.swift in Sources */,
+				95088E391C437BED009ADED7 /* KeySignatureChangingState.swift in Sources */,
 				958C76E51B8E121C00221004 /* KeyRange.swift in Sources */,
 				955F013D1C28989E000434AD /* Pitch.swift in Sources */,
+				9563F68A1C435E70003130CB /* GameCountStateMachine.swift in Sources */,
 				955F013B1C274300000434AD /* MajorKeySignature.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

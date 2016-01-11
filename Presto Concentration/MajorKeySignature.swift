@@ -190,4 +190,8 @@ class MajorKeySignature{
     func accidental(pitch:Pitch) -> Accidental{
         return self.accidentals[pitch.basePitch()]!;
     }
+    
+    func toString() -> String{
+        return self.keyLetter.rawValue + self.keyAccidental.rawValue
+    }
 }

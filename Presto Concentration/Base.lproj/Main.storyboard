@@ -22,7 +22,7 @@
                                 <rect key="frame" x="279" y="351" width="45" height="30"/>
                                 <state key="normal" title="Expert"/>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="presentation" animates="NO" id="CxA-6K-w4j"/>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" identifier="ExpertGame" animates="NO" id="CxA-6K-w4j"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jeh-6C-9T9">
@@ -36,7 +36,7 @@
                                 <rect key="frame" x="270" y="215" width="62" height="30"/>
                                 <state key="normal" title="Beginner"/>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="presentation" animates="NO" id="3pf-0h-yml"/>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" identifier="BeginnerGame" animates="NO" id="3pf-0h-yml"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CONCENTRATION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WbH-5C-lnn">
@@ -91,15 +91,6 @@
                             </view>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Hl-JV-Cxe" customClass="SKView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NaW-af-GbI">
-                                        <rect key="frame" x="144" y="17" width="42" height="30"/>
-                                        <state key="normal" title="pause"/>
-                                        <connections>
-                                            <action selector="pauseButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="Msr-f4-acD"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -127,6 +118,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0e1-gF-fb9"/>
+        <segue reference="3pf-0h-yml"/>
     </inferredMetricsTieBreakers>
 </document>

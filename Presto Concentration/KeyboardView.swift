@@ -34,7 +34,7 @@ class KeyboardView: UIView{
     
     func addKey(pitch:Pitch){
         
-        let newKey:KeyBase = KeyBase(pitch: pitch)
+        let newKey:KeyBase = KeyBase(isIvory: Keyboard.isIvory(pitch), pitchLetter: Keyboard.letterIfIvory(pitch))
         keys.append(newKey)
         
         var keyFrame:CGRect = CGRectZero
@@ -58,6 +58,16 @@ class KeyboardView: UIView{
         }
     }
     
+    func addKeyLetters(){
+        for index in 0...keys.count-1 {
+            let currentKey = keys[index]
+            let currentPitch = keyRange.pitches[index]
+            if let currentPitchLetter = Keyboard.letterIfIvory(currentPitch){
+                currentKey.addLetter(currentPitchLetter)
+            }
+        }
+    }
+    
     func removeAllKeysFromView(){
         for view:UIView in self.subviews {
             view.removeFromSuperview()
@@ -68,38 +78,46 @@ class KeyboardView: UIView{
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.removeAllKeysFromView()
-        
         ivoryWidth = self.frame.size.width / CGFloat(self.keyRange.numIvoryKeys)
         ivoryHeight = self.frame.size.height
         ebonyWidth = ivoryWidth * ivoryToEbonyWidth
         ebonyHeight = ivoryHeight * ivoryToEbonyHeight
         
+        self.removeAllKeysFromView()
         for pitch in self.keyRange.pitches {
             self.addKey(pitch)
         }
+    }
+    
+    private func pitchForKeyIndex(keyIndex:Int) -> Pitch{
+        let lowestKeyPitch:Pitch = self.keyRange.lowPitch()
+        let keyAtIndexAbsolutePitch:Int = lowestKeyPitch.absolutePitch + keyIndex
+        return Pitch(absolutePitch:keyAtIndexAbsolutePitch)
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         var pressedPitches:Set<Pitch> = Set<Pitch>()
         for keyIndex in 0 ... self.keys.count-1 {
             let key:KeyBase = self.keys[keyIndex]
+            let pressedKeyPitch:Pitch = self.pitchForKeyIndex(keyIndex)
             var keyIsPressed:Bool = false
             for touch:UITouch in touches {
                 let location:CGPoint = touch.locationInView(self)
                 if CGRectContainsPoint(key.frame, location) {
                     var ignore:Bool = false
-                    if Keyboard.isIvory(key.pitch) {
+                    if Keyboard.isIvory(pressedKeyPitch) {
                         if keyIndex > 0 {
                             let previousKey:KeyBase = self.keys[keyIndex-1]
-                            if (!Keyboard.isIvory(previousKey.pitch) &&
+                            let previousPitch:Pitch = self.pitchForKeyIndex(keyIndex-1)
+                            if (!Keyboard.isIvory(previousPitch) &&
                                 CGRectContainsPoint(previousKey.frame, location)){
                                     ignore = true
                             }
                         }
                         if keyIndex < self.keys.count-1 {
                             let nextKey:KeyBase = self.keys[keyIndex+1]
-                            if(!Keyboard.isIvory(nextKey.pitch) &&
+                            let nextPitch:Pitch = self.pitchForKeyIndex(keyIndex+1)
+                            if(!Keyboard.isIvory(nextPitch) &&
                                 CGRectContainsPoint(nextKey.frame, location)){
                                     ignore = true
                             }
@@ -110,7 +128,7 @@ class KeyboardView: UIView{
                         keyIsPressed = true
                         if !key.highlighted {
                             key.highlighted = true
-                            pressedPitches.insert(key.pitch)
+                            pressedPitches.insert(pressedKeyPitch)
                         }
                     }
                 }

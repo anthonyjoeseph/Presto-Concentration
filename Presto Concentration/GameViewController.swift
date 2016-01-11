@@ -8,7 +8,7 @@
 
 import UIKit
 import SpriteKit
-import AVFoundation
+import AudioToolbox
 
 class GameViewController: UIViewController {
     
@@ -16,23 +16,27 @@ class GameViewController: UIViewController {
     @IBOutlet var skViewOp:SKView?
     @IBOutlet var keyboardView:KeyboardView?
     
-    static let secondsInMinute:Int = 60
     static let distanceBetweenBeats:Double = 60
     
     var difficultyLevel:DifficultyLevel = DifficultyLevel.Beginner
     var gameModel:GameModel
-    var currentTimer:NSTimer = NSTimer()
     var staff:AnimatedStaff?
+    
+    var audioSounds:Dictionary<Int, SystemSoundID>
     
     var currentNotes:Set<NoteSprite> = Set()
     
     required init?(coder aDecoder: NSCoder) {
+        self.audioSounds = Dictionary<Int, SystemSoundID>()
         self.gameModel = GameModel()
         super.init(coder: aDecoder)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        loadSounds()
+        
         let skView = skViewOp!
         self.staff = AnimatedStaff(size: skView.bounds.size)
         skView.showsFPS = true
@@ -41,16 +45,28 @@ class GameViewController: UIViewController {
         staff!.scaleMode = .ResizeFill
         skView.presentScene(staff)
         
-        self.gameModel = GameModel()
+        self.gameModel.stopTimer()
+        self.gameModel = GameModel(updateStaffWithGameElement: self.updateStaffWithGameElement, areNotesCleared: self.areNotesCleared)
         self.gameModel.currentDifficultyLevel = self.difficultyLevel
-        self.resetTimer()
         
         //keyboard
         self.keyboardView?.pressedPitchesFunc = self.pitchesPressed
-        self.keyboardView?.keyRange = GameModel.trebleKeyRange
-        staff!.setKeySignatureSprite(self.createKeySignatureSprite(self.gameModel.currentKeySignature, isNaturals: false))
+        self.keyboardView?.keyRange = self.gameModel.currentKeyRange
+        if(self.difficultyLevel == DifficultyLevel.Beginner){
+            self.keyboardView?.addKeyLetters()
+        }
+        staff!.setKeySignatureSprite(self.createKeySignatureSprite(self.gameModel.currentKeySignature, clef: self.gameModel.currentClef, isNaturals: false))
         staff!.setClefSprite(self.createClefSprite(self.gameModel.currentClef))
         staff!.setTempoMarkingSprite(self.gameModel.currentBPM)
+    }
+    
+    func loadSounds(){
+        for index:Int in 0...87 {
+            var soundID:SystemSoundID = 0
+            let soundURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), String(index), "aif", nil)
+            AudioServicesCreateSystemSoundID(soundURL, &soundID)
+            self.audioSounds[index] = soundID
+        }
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -63,43 +79,49 @@ class GameViewController: UIViewController {
         self.gameModel.currentDifficultyLevel = difficultyLevel
     }
     
-    func update(){
-        let newGameElement:GameElement = self.gameModel.pickNewElement()
+    func updateStaffWithGameElement(newGameElement:GameElement){
         switch(newGameElement){
         case GameElement.Note:
             let newNote = self.gameModel.newNote()
             let newNoteSprite = self.createNoteSprite(newNote)
-            self.staff!.animateNoteSprite(newNoteSprite, pixelsPerSecond: pixelsPerSecondFromTempo())
-            break
-        case GameElement.Tempo:
-            self.gameModel.changeBPM()
-            self.staff!.animateTempoMarkingSprite(self.gameModel.currentBPM, pixelsPerSecond: pixelsPerSecondFromTempo())
-            self.resetTimer()
+            self.staff!.animateNoteSprite(newNoteSprite, pixelsPerSecond: pixelsPerSecondFromTempo(), callbackFunc:
+                {(Void) -> Void in
+                    self.currentNotes.remove(newNoteSprite)
+                })
             break
         case GameElement.KeySignature:
-            let newKeySignature = self.gameModel.changeKeySignature()
-            let newKeySignatureSprite = self.createKeySignatureSprite(newKeySignature, isNaturals: false)
-            self.staff!.animateKeySignatureSprite(newKeySignatureSprite, pixelsPerSecond: pixelsPerSecondFromTempo())
+            let newKeySignatureSprite = self.createKeySignatureSprite(self.gameModel.currentKeySignature, clef: self.gameModel.currentClef, isNaturals: false)
+            let oldKeySignatureSprite = self.createKeySignatureSprite(self.gameModel.previousKeySignature, clef: self.gameModel.currentClef, isNaturals: true)
+            self.staff!.animateKeySignatureSprite(newKeySignatureSprite, oldKeySignatureSprite: oldKeySignatureSprite, pixelsPerSecond: pixelsPerSecondFromTempo())
             break
         case GameElement.Clef:
-            let newClef = self.gameModel.changeClef()
-            let newClefSprite = self.createClefSprite(newClef)
-            self.keyboardView?.keyRange = self.gameModel.currentKeyRange
-            self.keyboardView?.setNeedsDisplay()
-            self.staff!.animateClefSprite(newClefSprite, pixelsPerSecond: pixelsPerSecondFromTempo())
+            let newClefSprite = self.createClefSprite(self.gameModel.currentClef)
+            let keySigAtThisTime = self.gameModel.currentKeySignature
+            let clefAtThisTime = self.gameModel.currentClef
+            let clefsKeyRangeAtThisTime = self.gameModel.currentKeyRange
+            self.staff!.animateClefSprite(newClefSprite, pixelsPerSecond: pixelsPerSecondFromTempo(), midwayCallbackFunc:
+                {(Void) -> Void in
+                    self.keyboardView?.keyRange = clefsKeyRangeAtThisTime
+                },
+                endCallbackFunc:
+                {(Void) -> Void in
+                    let newKeySigSprite = self.createKeySignatureSprite(keySigAtThisTime, clef: clefAtThisTime, isNaturals: false)
+                    self.staff!.setKeySignatureSprite(newKeySigSprite)
+                })
+            break
+        case GameElement.Tempo:
+            self.staff!.animateTempoMarkingSprite(self.gameModel.currentBPM, pixelsPerSecond: pixelsPerSecondFromTempo())
             break
         }
     }
     
-    func resetTimer(){
-        self.currentTimer.invalidate()
-        let timeBetweenBeats:Double = Double(GameViewController.secondsInMinute)/Double(self.gameModel.currentBPM)
-        self.currentTimer = NSTimer.scheduledTimerWithTimeInterval(timeBetweenBeats, target: self, selector: "update", userInfo: nil, repeats: true)
+    func areNotesCleared() -> Bool{
+        return self.currentNotes.count == 0
     }
     
     private func pixelsPerSecondFromTempo() -> Double{
         let pixelsPerBeat:Double = Double(self.staff!.size.width)/Double(8)
-        let beatsPerSecond:Double = Double(self.gameModel.currentBPM)/Double(GameViewController.secondsInMinute)
+        let beatsPerSecond:Double = Double(self.gameModel.currentBPM)/Double(GameModel.secondsInMinute)
         let pixelsPerSecond = pixelsPerBeat * beatsPerSecond
         return pixelsPerSecond
     }
@@ -128,7 +150,7 @@ class GameViewController: UIViewController {
         return noteSprite
     }
     
-    private func createKeySignatureSprite(keySignature:MajorKeySignature, isNaturals:Bool) -> KeySignatureSprite{
+    private func createKeySignatureSprite(keySignature:MajorKeySignature, clef:Clef, isNaturals:Bool) -> KeySignatureSprite{
         let accidental:Accidental
         if(isNaturals){
             accidental = Accidental.Natural
@@ -141,9 +163,20 @@ class GameViewController: UIViewController {
         }
         let accidentalPitchLetters:[PitchLetter] = keySignature.accidentalPitchLetters
         let isKeySharps:Bool = keySignature.isKeySharps
-        let incrementsFromMiddle:[Int] = self.gameModel.currentClef
-            .keySignatureAccidentalIncrementsFromMiddle(accidentalPitchLetters, isKeySharps: isKeySharps)
-        return KeySignatureSprite(accidentalIncrements: incrementsFromMiddle, accidental: accidental)
+        let incrementsFromMiddle:[Int] =
+            clef.keySignatureAccidentalIncrementsFromMiddle(accidentalPitchLetters, isKeySharps: isKeySharps)
+        let keySigSprite = KeySignatureSprite(accidentalIncrements: incrementsFromMiddle, accidental: accidental)
+        
+        if(!isNaturals){
+            let keyAccidental:Accidental?
+            if(keySignature.keyAccidental != Accidental.None){
+                keyAccidental = keySignature.keyAccidental
+            }else{
+                keyAccidental = nil
+            }
+            keySigSprite.addOverheadLetter(keySignature.keyLetter, accidental: keyAccidental)
+        }
+        return keySigSprite
     }
     
     private func createClefSprite(clef:Clef) -> SKSpriteNode{
@@ -173,13 +206,7 @@ class GameViewController: UIViewController {
     }
     
     private func playSound(pitch:Pitch){
-        let fileName:String = String(pitch.absolutePitch) + ".aif"
-        
-    }
-    
-    //pause
-    
-    @IBAction func pauseButtonPressed(){
-        self.staff!.paused = !self.staff!.paused
+        let systemSound:SystemSoundID = self.audioSounds[pitch.absolutePitch]!
+        AudioServicesPlaySystemSound(systemSound)
     }
 }

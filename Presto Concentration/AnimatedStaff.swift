@@ -35,7 +35,7 @@ class AnimatedStaff: SKScene {
         addChild(noteZone)
     }
     
-    func animateNoteSprite(noteSprite:NoteSprite, pixelsPerSecond:Double){
+    func animateNoteSprite(noteSprite:NoteSprite, pixelsPerSecond:Double, callbackFunc:(Void) -> Void){
         noteSprite.addLedgerLines(ledgerLineSpace)
         
         let oldNoteHeight = noteSprite.size.width
@@ -49,6 +49,7 @@ class AnimatedStaff: SKScene {
         
         animateSpriteAcrossStaff(noteSprite, endXPos: -noteSprite.size.width/2, pixelsPerSecond: pixelsPerSecond, afterEnd:
             {(Void) -> Void in
+                callbackFunc()
                 noteSprite.removeFromParent()
             })
         
@@ -56,6 +57,8 @@ class AnimatedStaff: SKScene {
     }
     
     func setKeySignatureSprite(keySignatureSprite:KeySignatureSprite){
+        self.currentKeySignatureSprite?.removeFromParent()
+        
         keySignatureSprite.addAccidentals(ledgerLineSpace)
         keySignatureSprite.anchorPoint = CGPoint(x: 0, y: 0.5)
         let middlePosition = size.height/2
@@ -65,37 +68,51 @@ class AnimatedStaff: SKScene {
         self.currentKeySignatureSprite = keySignatureSprite
     }
     
-    func animateKeySignatureSprite(keySignatureSprite:KeySignatureSprite, pixelsPerSecond:Double){
+    func animateKeySignatureSprite(keySignatureSprite:KeySignatureSprite, oldKeySignatureSprite:KeySignatureSprite, pixelsPerSecond:Double){
+        oldKeySignatureSprite.addAccidentals(ledgerLineSpace)
+        oldKeySignatureSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        let keySignatureDistance = oldKeySignatureSprite.calculateAccumulatedFrame().width + 30
+        oldKeySignatureSprite.position = CGPoint(x: -keySignatureDistance, y: 0)
+        keySignatureSprite.addChild(oldKeySignatureSprite)
+        
         keySignatureSprite.addAccidentals(ledgerLineSpace)
         keySignatureSprite.anchorPoint = CGPoint(x: 0, y: 0.5)
         let middlePosition = size.height/2
-        keySignatureSprite.position = CGPoint(x: size.width+(keySignatureSprite.size.width/2), y: middlePosition)
+        keySignatureSprite.position = CGPoint(x: size.width+(keySignatureSprite.calculateAccumulatedFrame().width/2), y: middlePosition)
         
-        animateSpriteAcrossStaff(keySignatureSprite, endXPos: 130, pixelsPerSecond: pixelsPerSecond, afterEnd:
+        animateSpriteAcrossStaff(keySignatureSprite, endXPos: 130 + keySignatureDistance, pixelsPerSecond: pixelsPerSecond, afterEnd:
             {(Void) -> Void in
                 self.currentKeySignatureSprite!.removeFromParent()
+                oldKeySignatureSprite.removeFromParent()
                 self.currentKeySignatureSprite = keySignatureSprite
+                self.animateSpriteAcrossStaff(keySignatureSprite, endXPos: 130, pixelsPerSecond: pixelsPerSecond, afterEnd:{Void in})
             })
         addChild(keySignatureSprite)
     }
     
     func setClefSprite(clefSprite:SKSpriteNode){
+        self.currentClefSprite?.removeFromParent()
         let middlePosition = size.height/2
         clefSprite.position = CGPoint(x: 60, y: middlePosition)
         self.currentClefSprite = clefSprite
         addChild(clefSprite)
     }
     
-    func animateClefSprite(clefSprite:SKSpriteNode, pixelsPerSecond:Double){
+    func animateClefSprite(clefSprite:SKSpriteNode, pixelsPerSecond:Double,
+        midwayCallbackFunc:(Void) -> Void, endCallbackFunc:(Void) -> Void){
         let middlePosition = size.height/2
         clefSprite.position = CGPoint(x: size.width+(clefSprite.size.width/2), y: middlePosition)
-        self.currentClefSprite = clefSprite
-        
-        animateSpriteAcrossStaff(clefSprite, endXPos: 60, pixelsPerSecond: pixelsPerSecond, afterEnd:
+        animateSpriteAcrossStaff(clefSprite, endXPos: self.size.width/2, pixelsPerSecond: pixelsPerSecond, afterEnd:
             {(Void) -> Void in
-                self.currentClefSprite!.removeFromParent()
-                self.currentClefSprite = clefSprite
+                midwayCallbackFunc()
+                self.animateSpriteAcrossStaff(clefSprite, endXPos: 60, pixelsPerSecond: pixelsPerSecond, afterEnd:
+                    {Void in
+                        endCallbackFunc()
+                        self.currentClefSprite!.removeFromParent()
+                        self.currentClefSprite = clefSprite
+                    })
             })
+        
         addChild(clefSprite)
     }
     
@@ -123,9 +140,11 @@ class AnimatedStaff: SKScene {
     }
     
     func setTempoMarkingSprite(bpm:Int){
+        self.currentTempoMarkingSprite?.removeFromParent()
         let tempoMarkingSprite = createTempoMarkingSprite(bpm)
         let middlePosition = size.height/2
         tempoMarkingSprite.position = CGPoint(x: 40, y: middlePosition + (ledgerLineSpace * 5))
+        self.currentTempoMarkingSprite = tempoMarkingSprite
         addChild(tempoMarkingSprite)
     }
     
