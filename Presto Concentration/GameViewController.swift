@@ -15,12 +15,23 @@ class GameViewController: UIViewController {
     
     @IBOutlet var skViewOp:SKView?
     @IBOutlet var keyboardView:KeyboardView?
+    @IBOutlet var countdownTimerImage:UIImageView?
     
     static let distanceBetweenBeats:Double = 60
     
     var difficultyLevel:DifficultyLevel = DifficultyLevel.Beginner
     var gameModel:GameModel
     var staff:AnimatedStaff?
+    private var score:Int = 0{
+        didSet{
+            self.staff!.scoreNode.text = String(score)
+        }
+    }
+    
+    private var countdownTimer:NSTimer?
+    private var countdownTimerCount = 3
+    private let countdownImageTwo:UIImage = UIImage(named: "countdown2")!
+    private let countdownImageOne:UIImage = UIImage(named: "countdown1")!
     
     var audioSounds:Dictionary<Int, SystemSoundID>
     
@@ -35,8 +46,6 @@ class GameViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        loadSounds()
-        
         let skView = skViewOp!
         self.staff = AnimatedStaff(size: skView.bounds.size)
         skView.showsFPS = true
@@ -45,19 +54,48 @@ class GameViewController: UIViewController {
         staff!.scaleMode = .ResizeFill
         skView.presentScene(staff)
         
-        self.gameModel.stopTimer()
-        self.gameModel = GameModel(updateStaffWithGameElement: self.updateStaffWithGameElement, areNotesCleared: self.areNotesCleared)
-        self.gameModel.currentDifficultyLevel = self.difficultyLevel
-        
-        //keyboard
         self.keyboardView?.pressedPitchesFunc = self.pitchesPressed
+        self.keyboardView?.releasedFunc = self.keysReleased
         self.keyboardView?.keyRange = self.gameModel.currentKeyRange
         if(self.difficultyLevel == DifficultyLevel.Beginner){
-            self.keyboardView?.addKeyLetters()
+            self.keyboardView?.keysHaveLetters = true
+        }else{
+            self.keyboardView?.keysHaveLetters = false
         }
         staff!.setKeySignatureSprite(self.createKeySignatureSprite(self.gameModel.currentKeySignature, clef: self.gameModel.currentClef, isNaturals: false))
         staff!.setClefSprite(self.createClefSprite(self.gameModel.currentClef))
         staff!.setTempoMarkingSprite(self.gameModel.currentBPM)
+    }
+    
+    override func viewDidAppear(animated:Bool) {
+        super.viewDidAppear(animated)
+        
+        loadSounds()
+        
+        self.gameModel = GameModel(updateStaffWithGameElement: self.updateStaffWithGameElement, areNotesCleared: self.areNotesCleared)
+        self.gameModel.currentDifficultyLevel = self.difficultyLevel
+        
+        self.score = 0
+        self.countdownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameViewController.countdownTimerTick), userInfo: nil, repeats: true)
+        
+        var soundID:SystemSoundID = 0
+        let soundURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), "silent", "mp3", nil)
+        AudioServicesCreateSystemSoundID(soundURL, &soundID)
+        AudioServicesPlaySystemSound(soundID)
+    }
+    
+    @objc func countdownTimerTick(){
+        if self.countdownTimerCount == 2 {
+            self.countdownTimerImage?.image = self.countdownImageTwo
+        }else if self.countdownTimerCount == 1 {
+            self.countdownTimerImage?.image = self.countdownImageOne
+        }else if self.countdownTimerCount <= 0{
+            self.gameModel.resetTimer()
+            self.countdownTimerImage?.hidden = true
+            self.countdownTimer!.invalidate()
+            self.countdownTimer = nil
+        }
+        self.countdownTimerCount -= 1
     }
     
     func loadSounds(){
@@ -78,6 +116,12 @@ class GameViewController: UIViewController {
     func setDifficultyLevel(difficultyLevel:DifficultyLevel){
         self.gameModel.currentDifficultyLevel = difficultyLevel
     }
+    /*
+    func updateStaffWithGameElementNew(newGameElement:GameElement){
+        let element:SKSpriteNode = StaffSpriteFactories.createGameElementSprite(newGameElement)
+        let callbacks = gameElementCallbackMethods(newGameElement)
+        self.staff!.animateSprite(newGameElement, callbacks, pickestPerSecondFromTempo())
+    }*/
     
     func updateStaffWithGameElement(newGameElement:GameElement){
         switch(newGameElement){
@@ -87,6 +131,7 @@ class GameViewController: UIViewController {
             self.staff!.animateNoteSprite(newNoteSprite, pixelsPerSecond: pixelsPerSecondFromTempo(), callbackFunc:
                 {(Void) -> Void in
                     self.currentNotes.remove(newNoteSprite)
+                    self.gameOver()
                 })
             break
         case GameElement.KeySignature:
@@ -115,10 +160,6 @@ class GameViewController: UIViewController {
         }
     }
     
-    func areNotesCleared() -> Bool{
-        return self.currentNotes.count == 0
-    }
-    
     private func pixelsPerSecondFromTempo() -> Double{
         let pixelsPerBeat:Double = Double(self.staff!.size.width)/Double(8)
         let beatsPerSecond:Double = Double(self.gameModel.currentBPM)/Double(GameModel.secondsInMinute)
@@ -126,8 +167,10 @@ class GameViewController: UIViewController {
         return pixelsPerSecond
     }
     
-    func gameOver(){
-        self.performSegueWithIdentifier("GameOver", sender: self)
+    //game model delegate
+    
+    func areNotesCleared() -> Bool{
+        return self.currentNotes.count == 0
     }
     
     //handle creating sprites
@@ -139,10 +182,11 @@ class GameViewController: UIViewController {
         
         let ledgerLines:LedgerLines? = clef.ledgerLines(note.pitch, keySignature: keySignature)
         let noteSprite = NoteSprite(note: note, incrementsFromMiddle: incrementsFromMiddle, ledgerLines:ledgerLines)
-        noteSprite.addStem(clef.isStemUp(note.pitch, keySignature: keySignature))
-        noteSprite.addAccidental(keySignature.accidental(note.pitch))
+        let isStemUp = clef.isStemUp(note.pitch, keySignature: keySignature)
+        noteSprite.addStem(isStemUp)
+        noteSprite.addAccidental(keySignature.nonSolfegAccidental(note.pitch))
         if(self.difficultyLevel == DifficultyLevel.Beginner){
-            noteSprite.addLetter(Keyboard.letterIfIvory(keySignature.relativeIvoryPitch(note.pitch))!)
+            noteSprite.addLetter(Keyboard.letterIfIvory(keySignature.relativeIvoryPitch(note.pitch))!, isStemInTheWay: !isStemUp)
         }
         
         self.currentNotes.insert(noteSprite)
@@ -155,37 +199,42 @@ class GameViewController: UIViewController {
         if(isNaturals){
             accidental = Accidental.Natural
         }else{
-            if (keySignature.isKeySharps){
+            if (keySignature.keyType == KeyType.Sharp){
                 accidental = Accidental.Sharp
             }else{
                 accidental = Accidental.Flat
             }
         }
-        let accidentalPitchLetters:[PitchLetter] = keySignature.accidentalPitchLetters
-        let isKeySharps:Bool = keySignature.isKeySharps
+        let accidentalPitchLetters:[PitchLetter] = keySignature.getAccidentalPitchLetters()
         let incrementsFromMiddle:[Int] =
-            clef.keySignatureAccidentalIncrementsFromMiddle(accidentalPitchLetters, isKeySharps: isKeySharps)
+            clef.keySignatureAccidentalIncrementsFromMiddle(accidentalPitchLetters, keyType: keySignature.keyType)
         let keySigSprite = KeySignatureSprite(accidentalIncrements: incrementsFromMiddle, accidental: accidental)
         
         if(!isNaturals){
-            let keyAccidental:Accidental?
-            if(keySignature.keyAccidental != Accidental.None){
-                keyAccidental = keySignature.keyAccidental
-            }else{
-                keyAccidental = nil
-            }
-            keySigSprite.addOverheadLetter(keySignature.keyLetter, accidental: keyAccidental)
+            keySigSprite.addOverheadLetter(keySignature.keyTitleLetter, accidental: keySignature.keyTitleType)
         }
         return keySigSprite
     }
     
     private func createClefSprite(clef:Clef) -> SKSpriteNode{
         let clefSprite:SKSpriteNode
+        
+        let staffHeight = self.staff!.staffNode.size.height
+        let desiredClefHeight:CGFloat
         if clef.isTrebleClef {
             clefSprite = SKSpriteNode(imageNamed: "TrebleClef")
+            desiredClefHeight = staffHeight * 1.7
         }else{
             clefSprite = SKSpriteNode(imageNamed: "BassClef")
+            clefSprite.anchorPoint = CGPoint(x: 0.5, y: 0.4)
+            desiredClefHeight = staffHeight * 0.7
         }
+        
+        let currentClefHeight = clefSprite.size.height
+        let heightScale = desiredClefHeight/currentClefHeight
+        clefSprite.xScale = heightScale
+        clefSprite.yScale = heightScale
+        
         return clefSprite
     }
     
@@ -198,15 +247,47 @@ class GameViewController: UIViewController {
         for noteSprite:NoteSprite in self.currentNotes{
             if(self.staff!.noteZone.containsPoint(noteSprite.position)){
                 if(pitches.contains(noteSprite.note.pitch)){
+                    updateScoreWithOneNote()
                     self.currentNotes.remove(noteSprite)
                     noteSprite.removeFromParent()
+                }else{
+                    score -= 10
                 }
             }
         }
+        self.staff!.pressNoteZone()
+    }
+    
+    func keysReleased(){
+        self.staff!.releaseNoteZone()
     }
     
     private func playSound(pitch:Pitch){
         let systemSound:SystemSoundID = self.audioSounds[pitch.absolutePitch]!
         AudioServicesPlaySystemSound(systemSound)
+    }
+    
+    //handle score
+    
+    private func updateScoreWithOneNote(){
+        switch(self.difficultyLevel){
+        case DifficultyLevel.Beginner:
+            score += 100
+            break
+        case DifficultyLevel.Intermediate:
+            score += 200
+            break
+        case DifficultyLevel.Expert:
+            score += 1000
+            break
+        }
+    }
+    
+    //handle game over
+    
+    func gameOver(){
+        let gameData = GamePersistence()
+        gameData.storeNewScore(self.score, name: "GEB")
+        self.performSegueWithIdentifier("GameOver", sender: self)
     }
 }

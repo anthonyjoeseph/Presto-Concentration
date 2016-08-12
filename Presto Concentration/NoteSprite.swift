@@ -14,13 +14,15 @@ class NoteSprite: SKSpriteNode{
     let note:Note
     var ledgerLines:LedgerLines?
     var incrementsFromMiddle:Int
+    var noteTexture:SKTexture?
+    let noteLetterBuffer:CGFloat = 20
     
     init(note:Note, incrementsFromMiddle:Int, ledgerLines:LedgerLines?){
         self.note = note
         self.incrementsFromMiddle = incrementsFromMiddle
         self.ledgerLines = ledgerLines
-        let texture = SKTexture(imageNamed:"WholeNote")
-        super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
+        self.noteTexture = SKTexture(imageNamed:"WholeNote")
+        super.init(texture: self.noteTexture!, color: UIColor.clearColor(), size: self.noteTexture!.size())
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,14 +32,20 @@ class NoteSprite: SKSpriteNode{
         super.init(coder: aDecoder)
     }
     
-    func addLetter(pitchLetter:PitchLetter){
-        let letterLabel:SKLabelNode = SKLabelNode(fontNamed: "Arial")
+    func addLetter(pitchLetter:PitchLetter, isStemInTheWay:Bool){
+        let letterLabel:SKLabelNode = SKLabelNode(fontNamed: "Gotham-Bold")
         letterLabel.text = pitchLetter.rawValue
         letterLabel.fontColor = UIColor.blackColor()
         letterLabel.fontSize = 50
         letterLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
         letterLabel.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
-        letterLabel.position = CGPoint(x: self.size.width, y: 0)
+        let accumulatedHeight:CGFloat
+        if isStemInTheWay {
+            accumulatedHeight = self.calculateAccumulatedFrame().size.height
+        } else {
+            accumulatedHeight = self.size.height
+        }
+        letterLabel.position = CGPoint(x: 0, y: -accumulatedHeight - noteLetterBuffer)
         
         let background:SKSpriteNode =
             SKSpriteNode(color: UIColor.whiteColor(),
@@ -49,24 +57,40 @@ class NoteSprite: SKSpriteNode{
     }
     
     func addAccidental(accidental:Accidental){
+        let accidentalNodeOp:SKSpriteNode?
+        
+        let noteHeight = self.noteTexture!.size().height
+        var desiredAccidentalHeight:CGFloat? = nil
+        
         switch(accidental){
         case Accidental.Natural:
-            let natural = SKSpriteNode(imageNamed: "Natural")
-            natural.position = CGPoint(x: -natural.size.width, y: 0)
-            self.addChild(natural)
+            accidentalNodeOp = SKSpriteNode(imageNamed: "Natural")
+            desiredAccidentalHeight = noteHeight * 1.7
             break
         case Accidental.Sharp:
-            let sharp = SKSpriteNode(imageNamed: "Sharp")
-            sharp.position = CGPoint(x: -sharp.size.width, y: 0)
-            self.addChild(sharp)
+            accidentalNodeOp = SKSpriteNode(imageNamed: "Sharp")
+            desiredAccidentalHeight = noteHeight * 1.7
             break
         case Accidental.Flat:
-            let flat = SKSpriteNode(imageNamed: "Flat")
-            flat.position = CGPoint(x: -flat.size.width, y: 0)
-            self.addChild(flat)
+            accidentalNodeOp = SKSpriteNode(imageNamed: "Flat")
+            desiredAccidentalHeight = noteHeight * 2
+            accidentalNodeOp!.anchorPoint = CGPoint(x: 0.5, y: 0.3)
             break
         default:
+            accidentalNodeOp = nil
             break
+        }
+        
+        if let accidentalNode = accidentalNodeOp{
+            //resize
+            let currentAccidentalHeight = accidentalNode.size.height
+            let heightScale = desiredAccidentalHeight!/currentAccidentalHeight
+            accidentalNode.xScale = heightScale
+            accidentalNode.yScale = heightScale
+            
+            //reposition
+            accidentalNode.position = CGPoint(x: -30, y: 0)//CGPoint(x: -accidentalNode.size.width, y: 0)
+            self.addChild(accidentalNode)
         }
     }
     

@@ -11,6 +11,8 @@ import SpriteKit
 
 class KeySignatureSprite: SKSpriteNode{
     
+    private let xSpaceBetweenAccidentals:CGFloat = CGFloat(30)
+    
     private var accidentalIncrements:[Int]
     private var accidental:Accidental
     private var overheadLetter:SKLabelNode? = nil
@@ -32,33 +34,45 @@ class KeySignatureSprite: SKSpriteNode{
         var currentXPosition:CGFloat = CGFloat(0)
         for incrementsFromMiddle:Int in accidentalIncrements{
             let accidentalSprite:SKSpriteNode
+            let noteHeight = ledgerLineSpace
+            let desiredAccidentalHeight:CGFloat
+            
             switch(accidental){
             case Accidental.Sharp:
                 accidentalSprite = SKSpriteNode(imageNamed: "Sharp")
+                desiredAccidentalHeight = noteHeight * 1.7
                 break
             case Accidental.Flat:
                 accidentalSprite = SKSpriteNode(imageNamed: "Flat")
+                desiredAccidentalHeight = noteHeight * 2
+                accidentalSprite.anchorPoint = CGPoint(x: 0.5, y: 0.25)
                 break
             case Accidental.Natural:
                 accidentalSprite = SKSpriteNode(imageNamed: "Natural")
+                desiredAccidentalHeight = noteHeight * 1.7
                 break
             default:
                 accidentalSprite = SKSpriteNode(imageNamed: "Natural")
+                desiredAccidentalHeight = noteHeight * 1.7
                 break
             }
+            
+            let currentAccidentalHeight = accidentalSprite.size.height
+            let heightScale = desiredAccidentalHeight/currentAccidentalHeight
+            accidentalSprite.xScale = heightScale
+            accidentalSprite.yScale = heightScale
+            
             let positionOnStaff = CGPoint(x: currentXPosition, y: CGFloat(incrementsFromMiddle)*(ledgerLineSpace/2))
             accidentalSprite.position = positionOnStaff
-            currentXPosition += CGFloat(30)
+            currentXPosition += xSpaceBetweenAccidentals
             self.addChild(accidentalSprite)
         }
     }
     
-    func addOverheadLetter(letter:PitchLetter, accidental:Accidental?){
-        let letterLabel:SKLabelNode = SKLabelNode(fontNamed: "Arial")
+    func addOverheadLetter(letter:PitchLetter, accidental:KeyType){
+        let letterLabel:SKLabelNode = SKLabelNode(fontNamed: "Gotham-Bold")
         var keyText = letter.rawValue
-        if let definiteAccidentalText = accidental?.rawValue {
-            keyText += definiteAccidentalText
-        }
+        keyText += accidental.rawValue
         letterLabel.text = keyText
         letterLabel.fontColor = UIColor.blackColor()
         letterLabel.fontSize = 50

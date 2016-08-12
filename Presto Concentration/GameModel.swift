@@ -19,7 +19,7 @@ enum DifficultyLevel{
 class GameModel: NSObject{
     static let trebleKeyRange:KeyRange = KeyRange(lowPitch: Pitch(absolutePitch: 39), highPitch: Pitch(absolutePitch: 54))
     static let bassKeyRange:KeyRange = KeyRange(lowPitch: Pitch(absolutePitch: 27), highPitch: Pitch(absolutePitch: 42))
-    static let defaultBPM:Int = 120
+    static let defaultBPM:Int = 60
     static let secondsInMinute:Int = 60
     
     var currentTimer:NSTimer = NSTimer()
@@ -28,6 +28,18 @@ class GameModel: NSObject{
             if let definiteNewDifficultyLevel = self.currentDifficultyLevel {
                 gameCountState = GameCountStateMachine(difficultyLevel: definiteNewDifficultyLevel)
                 gameCountState.areNotesCleared = self.areNotesCleared
+                
+                switch(self.currentDifficultyLevel!){
+                case DifficultyLevel.Beginner:
+                    self.currentBPM = 40
+                    break
+                case DifficultyLevel.Intermediate:
+                    self.currentBPM = 50
+                    break
+                case DifficultyLevel.Expert:
+                    self.currentBPM = 60
+                    break
+                }
             }
         }
     }
@@ -51,14 +63,12 @@ class GameModel: NSObject{
         
         self.currentBPM = GameModel.defaultBPM
         self.currentClef = Clef(isTrebleClef: true)
-        self.currentKeySignature = MajorKeySignature(keyLetter: PitchLetter.C, keyAccidental: Accidental.None)!
-        self.previousKeySignature = MajorKeySignature(keyLetter: PitchLetter.C, keyAccidental: Accidental.None)!
+        self.currentKeySignature = MajorKeySignature(keyTitleLetter: PitchLetter.B, keyTitleType: KeyType.Flat)!
+        self.previousKeySignature = MajorKeySignature(keyTitleLetter: PitchLetter.C, keyTitleType: KeyType.None)!
         self.currentKeyRange = GameModel.trebleKeyRange
         self.gameCountState = GameCountStateMachine(difficultyLevel: DifficultyLevel.Beginner)
         
         super.init()
-        
-        self.resetTimer()
     }
     
     func update(){
@@ -92,7 +102,8 @@ class GameModel: NSObject{
     func resetTimer(){
         self.currentTimer.invalidate()
         let timeBetweenBeats:Double = Double(GameModel.secondsInMinute)/Double(self.currentBPM)
-        self.currentTimer = NSTimer.scheduledTimerWithTimeInterval(timeBetweenBeats, target: self, selector: "update", userInfo: nil, repeats: true)
+        self.currentTimer = NSTimer.scheduledTimerWithTimeInterval(timeBetweenBeats, target: self, selector: #selector(GameModel.update), userInfo: nil, repeats: true)
+        update()
     }
     func stopTimer(){
         self.currentTimer.invalidate()
@@ -100,7 +111,7 @@ class GameModel: NSObject{
     
     func newNote() -> Note{
         let randomPitch:Pitch
-        if(self.gameCountState.isNewNoteInKey()){
+        if(self.currentDifficultyLevel == DifficultyLevel.Beginner){
             randomPitch = randomPitchInKey()
         }else{
             randomPitch = anyRandomPitch()
@@ -162,36 +173,36 @@ class GameModel: NSObject{
             break
         }
         
-        var newAccidental:Accidental
+        var newKeyType:KeyType
         let randomAccidentalIndex = arc4random_uniform(3)
         switch(randomAccidentalIndex){
         case 0:
-            newAccidental = Accidental.None
+            newKeyType = KeyType.None
             break
         case 1:
-            newAccidental = Accidental.Flat
+            newKeyType = KeyType.Flat
             break
         case 2:
-            newAccidental = Accidental.Sharp
+            newKeyType = KeyType.Sharp
             break
         default:
-            newAccidental = Accidental.None
+            newKeyType = KeyType.None
             break
         }
-        if(newKeyLetter == PitchLetter.B && newAccidental == Accidental.Sharp){
-            newAccidental = Accidental.None
-        }else if(newKeyLetter == PitchLetter.E && newAccidental == Accidental.Sharp){
-            newAccidental = Accidental.None
-        }else if(newKeyLetter == PitchLetter.F && newAccidental == Accidental.Flat){
-            newAccidental = Accidental.None
-        }else if(newKeyLetter == PitchLetter.G && newAccidental == Accidental.Sharp){
-            newAccidental = Accidental.None
-        }else if(newKeyLetter == PitchLetter.A && newAccidental == Accidental.Sharp){
-            newAccidental = Accidental.None
-        }else if(newKeyLetter == PitchLetter.D && newAccidental == Accidental.Sharp){
-            newAccidental = Accidental.None
+        if(newKeyLetter == PitchLetter.B && newKeyType == KeyType.Sharp){
+            newKeyType = KeyType.None
+        }else if(newKeyLetter == PitchLetter.E && newKeyType == KeyType.Sharp){
+            newKeyType = KeyType.None
+        }else if(newKeyLetter == PitchLetter.F && newKeyType == KeyType.Flat){
+            newKeyType = KeyType.None
+        }else if(newKeyLetter == PitchLetter.G && newKeyType == KeyType.Sharp){
+            newKeyType = KeyType.None
+        }else if(newKeyLetter == PitchLetter.A && newKeyType == KeyType.Sharp){
+            newKeyType = KeyType.None
+        }else if(newKeyLetter == PitchLetter.D && newKeyType == KeyType.Sharp){
+            newKeyType = KeyType.None
         }
-        self.currentKeySignature = MajorKeySignature(keyLetter: newKeyLetter, keyAccidental: newAccidental)!
+        self.currentKeySignature = MajorKeySignature(keyTitleLetter: newKeyLetter, keyTitleType: newKeyType)!
         return self.currentKeySignature
     }
     

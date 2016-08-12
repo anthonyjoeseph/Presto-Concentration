@@ -11,12 +11,29 @@ import SpriteKit
 
 class AnimatedStaff: SKScene {
     
+    static let clefXPos:CGFloat = 100
+    static let keySigXPos:CGFloat = 180
+    static let tempoXPos:CGFloat = 40
+    
     let staffNode = SKSpriteNode(imageNamed: "Music-Staff")
-    let noteZone = SKSpriteNode(imageNamed: "NoteZone")
+    private let noteZoneUnpressedTexture = SKTexture(imageNamed: "NoteZone")
+    private let noteZonePressedTexture = SKTexture(imageNamed: "NoteZonePressed")
+    let noteZone:SKSpriteNode
+    let scoreNode:SKLabelNode = SKLabelNode(fontNamed: "Gotham-Bold")
     private var ledgerLineSpace:CGFloat = 0.0
     private var currentKeySignatureSprite:KeySignatureSprite? = nil
     private var currentClefSprite:SKSpriteNode? = nil
     private var currentTempoMarkingSprite:SKSpriteNode? = nil
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.noteZone = SKSpriteNode(texture: self.noteZoneUnpressedTexture)
+        super.init()
+    }
+    
+    override init(size: CGSize) {
+        self.noteZone = SKSpriteNode(texture: self.noteZoneUnpressedTexture)
+        super.init(size: size)
+    }
     
     override func didMoveToView(view: SKView) {
         backgroundColor = SKColor.whiteColor()
@@ -25,14 +42,34 @@ class AnimatedStaff: SKScene {
         staffNode.position = CGPoint(x: size.width/2, y: size.height/2)
         staffNode.zPosition = 0.0
         
-        noteZone.size = CGSize(width: size.width/6, height: size.height)
         noteZone.position = CGPoint(x: size.width/2, y: size.height/2)
         noteZone.zPosition = 2.0
+        noteZone.anchorPoint = CGPoint(x: 0.5, y: 0.52)
+        let currentNoteZoneHeight = noteZoneUnpressedTexture.size().height
+        let desiredNoteZoneHeight = self.size.height * 0.95
+        let heightScale = desiredNoteZoneHeight/currentNoteZoneHeight
+        noteZone.xScale = heightScale
+        noteZone.yScale = heightScale
+        
+        scoreNode.fontColor = UIColor.blackColor()
+        scoreNode.fontSize = 50
+        scoreNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Right
+        scoreNode.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+        scoreNode.position = CGPoint(x: self.size.width - scoreNode.frame.width , y: 100 + ((staffNode.size.height/2)+staffNode.position.y))
         
         self.ledgerLineSpace = staffNode.size.height * 0.245
         
         addChild(staffNode)
         addChild(noteZone)
+        addChild(scoreNode)
+    }
+    
+    func pressNoteZone(){
+        self.noteZone.texture = self.noteZonePressedTexture
+    }
+    
+    func releaseNoteZone(){
+        self.noteZone.texture = self.noteZoneUnpressedTexture
     }
     
     func animateNoteSprite(noteSprite:NoteSprite, pixelsPerSecond:Double, callbackFunc:(Void) -> Void){
@@ -62,7 +99,7 @@ class AnimatedStaff: SKScene {
         keySignatureSprite.addAccidentals(ledgerLineSpace)
         keySignatureSprite.anchorPoint = CGPoint(x: 0, y: 0.5)
         let middlePosition = size.height/2
-        keySignatureSprite.position = CGPoint(x: 130, y: middlePosition)
+        keySignatureSprite.position = CGPoint(x: AnimatedStaff.keySigXPos, y: middlePosition)
         addChild(keySignatureSprite)
         
         self.currentKeySignatureSprite = keySignatureSprite
@@ -71,8 +108,8 @@ class AnimatedStaff: SKScene {
     func animateKeySignatureSprite(keySignatureSprite:KeySignatureSprite, oldKeySignatureSprite:KeySignatureSprite, pixelsPerSecond:Double){
         oldKeySignatureSprite.addAccidentals(ledgerLineSpace)
         oldKeySignatureSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        let keySignatureDistance = oldKeySignatureSprite.calculateAccumulatedFrame().width + 30
-        oldKeySignatureSprite.position = CGPoint(x: -keySignatureDistance, y: 0)
+        let keySignaturePadding = oldKeySignatureSprite.calculateAccumulatedFrame().width + 30
+        oldKeySignatureSprite.position = CGPoint(x: -keySignaturePadding, y: 0)
         keySignatureSprite.addChild(oldKeySignatureSprite)
         
         keySignatureSprite.addAccidentals(ledgerLineSpace)
@@ -80,12 +117,12 @@ class AnimatedStaff: SKScene {
         let middlePosition = size.height/2
         keySignatureSprite.position = CGPoint(x: size.width+(keySignatureSprite.calculateAccumulatedFrame().width/2), y: middlePosition)
         
-        animateSpriteAcrossStaff(keySignatureSprite, endXPos: 130 + keySignatureDistance, pixelsPerSecond: pixelsPerSecond, afterEnd:
+        animateSpriteAcrossStaff(keySignatureSprite, endXPos: AnimatedStaff.keySigXPos + keySignaturePadding, pixelsPerSecond: pixelsPerSecond, afterEnd:
             {(Void) -> Void in
                 self.currentKeySignatureSprite!.removeFromParent()
                 oldKeySignatureSprite.removeFromParent()
                 self.currentKeySignatureSprite = keySignatureSprite
-                self.animateSpriteAcrossStaff(keySignatureSprite, endXPos: 130, pixelsPerSecond: pixelsPerSecond, afterEnd:{Void in})
+                self.animateSpriteAcrossStaff(keySignatureSprite, endXPos: AnimatedStaff.keySigXPos, pixelsPerSecond: pixelsPerSecond, afterEnd:{Void in})
             })
         addChild(keySignatureSprite)
     }
@@ -93,7 +130,7 @@ class AnimatedStaff: SKScene {
     func setClefSprite(clefSprite:SKSpriteNode){
         self.currentClefSprite?.removeFromParent()
         let middlePosition = size.height/2
-        clefSprite.position = CGPoint(x: 60, y: middlePosition)
+        clefSprite.position = CGPoint(x: AnimatedStaff.clefXPos, y: middlePosition)
         self.currentClefSprite = clefSprite
         addChild(clefSprite)
     }
@@ -105,7 +142,7 @@ class AnimatedStaff: SKScene {
         animateSpriteAcrossStaff(clefSprite, endXPos: self.size.width/2, pixelsPerSecond: pixelsPerSecond, afterEnd:
             {(Void) -> Void in
                 midwayCallbackFunc()
-                self.animateSpriteAcrossStaff(clefSprite, endXPos: 60, pixelsPerSecond: pixelsPerSecond, afterEnd:
+                self.animateSpriteAcrossStaff(clefSprite, endXPos: AnimatedStaff.clefXPos, pixelsPerSecond: pixelsPerSecond, afterEnd:
                     {Void in
                         endCallbackFunc()
                         self.currentClefSprite!.removeFromParent()
@@ -127,7 +164,7 @@ class AnimatedStaff: SKScene {
         qNoteSprite.position = CGPoint(x: 0, y: 0)
         tempoMarkingSprite.addChild(qNoteSprite)
         
-        let tempoLabel:SKLabelNode = SKLabelNode(fontNamed: "Arial")
+        let tempoLabel:SKLabelNode = SKLabelNode(fontNamed: "Gotham-Bold")
         tempoLabel.text = "= " + String(bpm)
         tempoLabel.fontColor = UIColor.blackColor()
         tempoLabel.fontSize = 30
@@ -143,7 +180,7 @@ class AnimatedStaff: SKScene {
         self.currentTempoMarkingSprite?.removeFromParent()
         let tempoMarkingSprite = createTempoMarkingSprite(bpm)
         let middlePosition = size.height/2
-        tempoMarkingSprite.position = CGPoint(x: 40, y: middlePosition + (ledgerLineSpace * 5))
+        tempoMarkingSprite.position = CGPoint(x: AnimatedStaff.tempoXPos, y: middlePosition + (ledgerLineSpace * 5))
         self.currentTempoMarkingSprite = tempoMarkingSprite
         addChild(tempoMarkingSprite)
     }
@@ -153,7 +190,7 @@ class AnimatedStaff: SKScene {
         let middlePosition = size.height/2
         tempoMarkingSprite.position = CGPoint(x: size.width+(tempoMarkingSprite.size.width/2), y: middlePosition + (ledgerLineSpace * 5))
         
-        animateSpriteAcrossStaff(tempoMarkingSprite, endXPos: 40, pixelsPerSecond: pixelsPerSecond, afterEnd:
+        animateSpriteAcrossStaff(tempoMarkingSprite, endXPos: AnimatedStaff.tempoXPos, pixelsPerSecond: pixelsPerSecond, afterEnd:
             {(Void) -> Void in
                 self.currentTempoMarkingSprite!.removeFromParent()
                 self.currentTempoMarkingSprite = tempoMarkingSprite

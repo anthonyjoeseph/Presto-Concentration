@@ -15,6 +15,15 @@ struct LedgerLines{
 }
 
 class Clef{
+    let B4MiddleTrebleClef = Pitch(absolutePitch: 50)
+    let D2MiddleBassClef = Pitch(absolutePitch: 29)
+    let A4TrebleBaseA = Pitch(absolutePitch: 48)
+    let A2BassBaseA = Pitch(absolutePitch: 24)
+    let G4HighestTrebleSharp = Pitch(absolutePitch: 58)
+    let E4HighestTrebleFlat = Pitch(absolutePitch: 55)
+    let G2HighestBassSharp = Pitch(absolutePitch: 34)
+    let E2HighestBassFlat = Pitch(absolutePitch: 31)
+    
     static let numStepsInsideStaff:Int = 11
     let isTrebleClef:Bool
     let middlePitch:Pitch
@@ -22,15 +31,15 @@ class Clef{
     init(isTrebleClef:Bool){
         self.isTrebleClef = isTrebleClef
         if(isTrebleClef){
-            self.middlePitch = Pitch(absolutePitch: 50)
+            self.middlePitch = B4MiddleTrebleClef
         }else{
-            self.middlePitch = Pitch(absolutePitch: 29)
+            self.middlePitch = D2MiddleBassClef
         }
     }
     
     func incrementsFromMiddle(pitch:Pitch, keySignature:MajorKeySignature) -> Int{
         let relativeIvory = keySignature.relativeIvoryPitch(pitch)
-        return Keyboard.ivoryDistance(self.middlePitch, comparisonPitch: relativeIvory)
+        return Keyboard.staffDistanceIfIvories(self.middlePitch, comparisonPitch: relativeIvory)!
     }
     
     func isStemUp(pitch:Pitch, keySignature:MajorKeySignature) -> Bool{
@@ -50,32 +59,32 @@ class Clef{
         }
         return LedgerLines(NumLines: (abs(numIncrementsAbove)+1)/2, IsOnLine: abs(numIncrementsAbove)%2==1, IsAboveStaff: numIncrementsAbove > 0)
     }
-    func keySignatureAccidentalIncrementsFromMiddle(accidentalLetters:[PitchLetter], isKeySharps:Bool) -> [Int]{
+    func keySignatureAccidentalIncrementsFromMiddle(accidentalLetters:[PitchLetter], keyType:KeyType) -> [Int]{
         var allIncrements:[Int] = []
         for accidentalLetter in accidentalLetters{
             let baseAPitch:Pitch
             let highestPitch:Pitch
             if isTrebleClef {
-                baseAPitch = Pitch(absolutePitch: 48)
-                if(isKeySharps){
-                    highestPitch = Pitch(absolutePitch: 58)
+                baseAPitch = A4TrebleBaseA
+                if(keyType == KeyType.Sharp){
+                    highestPitch = G4HighestTrebleSharp
                 }else{
-                    highestPitch = Pitch(absolutePitch: 55)
+                    highestPitch = E4HighestTrebleFlat
                 }
             }else{
-                baseAPitch = Pitch(absolutePitch: 24)
-                if(isKeySharps){
-                    highestPitch = Pitch(absolutePitch: 34)
+                baseAPitch = A2BassBaseA
+                if(keyType == KeyType.Sharp){
+                    highestPitch = G2HighestBassSharp
                 }else{
-                    highestPitch = Pitch(absolutePitch: 31)
+                    highestPitch = E2HighestBassFlat
                 }
             }
             let basePitchForAccidental = lowestPitchForLetter(accidentalLetter)
             var accidentalPitch = Pitch(absolutePitch: basePitchForAccidental.absolutePitch + baseAPitch.absolutePitch)
             if(highestPitch.absolutePitch < accidentalPitch.absolutePitch){
-                accidentalPitch = accidentalPitch.interval(Interval.PerfectOctave, intervalDirection: IntervalDirection.Down)
+                accidentalPitch = accidentalPitch.interval(Interval(distance: IntervalDistance.PerfectOctave, direction: IntervalDirection.Down))
             }
-            allIncrements.append(Keyboard.ivoryDistance(self.middlePitch, comparisonPitch: accidentalPitch))
+            allIncrements.append(Keyboard.staffDistanceIfIvories(self.middlePitch, comparisonPitch: accidentalPitch)!)
         }
         return allIncrements
     }

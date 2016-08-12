@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "NoteZoneCorrect.png"
+      "filename" : "trebleClef.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",

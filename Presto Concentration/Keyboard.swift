@@ -71,18 +71,21 @@ class Keyboard:NSObject{
         
         return isIvory
     }
-    static func ivoryDistance(pitch:Pitch, comparisonPitch:Pitch) -> Int{
+    static func staffDistanceIfIvories(pitch:Pitch, comparisonPitch:Pitch) -> Int?{
+        if(!self.isIvory(pitch) || !self.isIvory(comparisonPitch)){
+            return nil
+        }
         if pitch.absolutePitch == comparisonPitch.absolutePitch {
             return 0
         }
         if pitch.absolutePitch > comparisonPitch.absolutePitch {
-            return -1 * self.ivoryDistance(comparisonPitch, comparisonPitch: pitch)
+            return -1 * self.staffDistanceIfIvories(comparisonPitch, comparisonPitch: pitch)!
         }
         var ivoriesBetween = 0
         for currentAbsolutePitch in pitch.absolutePitch ... comparisonPitch.absolutePitch-1 {
             let currentPitch = Pitch(absolutePitch: currentAbsolutePitch)
             if isIvory(currentPitch){
-                ivoriesBetween++
+                ivoriesBetween += 1
             }
         }
         return ivoriesBetween

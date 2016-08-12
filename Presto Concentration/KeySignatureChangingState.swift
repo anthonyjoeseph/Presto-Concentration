@@ -34,6 +34,6 @@ class KeySignatureChangingState:GameCountState{
         return GameElement.KeySignature
     }
     func updateCycle(){
-        cyclesSinceStart++
+        cyclesSinceStart += 1
     }
 }

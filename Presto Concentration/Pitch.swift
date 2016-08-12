@@ -8,7 +8,12 @@
 
 import Foundation
 
-enum Interval:Int{
+struct Interval{
+    let distance:IntervalDistance
+    let direction:IntervalDirection
+}
+
+enum IntervalDistance:Int{
     case HalfStep = 1
     case WholeStep = 2
     case MinorThird = 3
@@ -42,15 +47,15 @@ class Pitch:Equatable, Hashable{
         self.absolutePitch = absolutePitch
         self.octave = absolutePitch / 12
     }
-    func interval(interval:Interval, intervalDirection:IntervalDirection) -> Pitch{
+    func interval(interval:Interval) -> Pitch{
         var newAbsolutePitch:Int
-        if(intervalDirection == IntervalDirection.Down){
-            newAbsolutePitch = self.absolutePitch - interval.rawValue
+        if(interval.direction == IntervalDirection.Down){
+            newAbsolutePitch = self.absolutePitch - interval.distance.rawValue
             if(newAbsolutePitch < 0){
                 newAbsolutePitch += 84
             }
         }else{
-            newAbsolutePitch = self.absolutePitch + interval.rawValue
+            newAbsolutePitch = self.absolutePitch + interval.distance.rawValue
             if(newAbsolutePitch >= 88){
                 newAbsolutePitch -= 84
             }

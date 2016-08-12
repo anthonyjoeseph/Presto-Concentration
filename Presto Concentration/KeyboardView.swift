@@ -24,17 +24,24 @@ class KeyboardView: UIView{
     private var ebonyHeight:CGFloat = 0
     
     var pressedPitchesFunc: (Set<Pitch>) -> Void
+    var releasedFunc: (Void) -> Void
+    var keysHaveLetters:Bool = false
 
     required init?(coder aDecoder: NSCoder) {
         self.keyRange = KeyRange(lowPitch: Pitch(absolutePitch: 0), highPitch: Pitch(absolutePitch: 0))
         //empty, client can override
         self.pressedPitchesFunc =  {( n:Set<Pitch> ) -> Void in }
+        self.releasedFunc = {(Void) -> Void in }
         super.init(coder: aDecoder)
     }
     
     func addKey(pitch:Pitch){
-        
-        let newKey:KeyBase = KeyBase(isIvory: Keyboard.isIvory(pitch), pitchLetter: Keyboard.letterIfIvory(pitch))
+        let newKey:KeyBase
+        if(self.keysHaveLetters){
+            newKey = KeyBase(isIvory: Keyboard.isIvory(pitch), pitchLetterOp: Keyboard.letterIfIvory(pitch))
+        }else{
+            newKey = KeyBase(isIvory: Keyboard.isIvory(pitch), pitchLetterOp: nil)
+        }
         keys.append(newKey)
         
         var keyFrame:CGRect = CGRectZero
@@ -55,16 +62,6 @@ class KeyboardView: UIView{
         self.addSubview(newKey)
         if Keyboard.isIvory(pitch) {
             self.sendSubviewToBack(newKey)
-        }
-    }
-    
-    func addKeyLetters(){
-        for index in 0...keys.count-1 {
-            let currentKey = keys[index]
-            let currentPitch = keyRange.pitches[index]
-            if let currentPitchLetter = Keyboard.letterIfIvory(currentPitch){
-                currentKey.addLetter(currentPitchLetter)
-            }
         }
     }
     
@@ -156,5 +153,6 @@ class KeyboardView: UIView{
                 }
             }
         }
+        self.releasedFunc()
     }
 }

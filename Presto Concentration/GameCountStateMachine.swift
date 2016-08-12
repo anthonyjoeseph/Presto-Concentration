@@ -36,10 +36,6 @@ class GameCountStateMachine{
         self.tempoChangingState.stateMachine = self
     }
     
-    func isNewNoteInKey() -> Bool{
-        return self.difficultyLevel == DifficultyLevel.Beginner
-    }
-    
     func changeState(newState:CountState){
         switch(newState){
         case CountState.NoteAndClefState:

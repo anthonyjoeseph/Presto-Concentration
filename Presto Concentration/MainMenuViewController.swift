@@ -21,11 +21,11 @@ class MainMenuViewController: UIViewController{
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if let newViewController = segue.destinationViewController as? GameViewController {
-            if segue.identifier == "BeginnerGame"{
+            if segue.identifier == "Beginner"{
                 newViewController.difficultyLevel = DifficultyLevel.Beginner
-            }else if segue.identifier == "IntermediateGame" {
+            }else if segue.identifier == "Intermediate" {
                 newViewController.difficultyLevel = DifficultyLevel.Intermediate
-            }else if segue.identifier == "ExpertGame"{
+            }else if segue.identifier == "Expert"{
                 newViewController.difficultyLevel = DifficultyLevel.Expert
             }
         }

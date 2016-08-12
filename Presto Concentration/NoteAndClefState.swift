@@ -35,9 +35,9 @@ class NoteAndClefState:GameCountState{
             case DifficultyLevel.Beginner:
                 return 0
             case DifficultyLevel.Intermediate:
-                return 1
+                return 0
             case DifficultyLevel.Expert:
-                return 1
+                return 0.3
             }
         }else{
             return 0
@@ -69,12 +69,15 @@ class NoteAndClefState:GameCountState{
         return false
     }
     func pickNewElement() -> GameElement{
-        let newElement = randomElement()
+        var newElement = randomElement()
+        if(newElement == GameElement.KeySignature){
+            newElement = GameElement.Note
+        }
         switch(newElement){
         case GameElement.Note:
-            noteCountSinceTempoChange++
-            noteCountSinceNewClef++
-            noteCountSinceNewKeySignature++
+            noteCountSinceTempoChange += 1
+            noteCountSinceNewClef += 1
+            noteCountSinceNewKeySignature += 1
             break
         case GameElement.Clef:
             noteCountSinceNewClef = 0

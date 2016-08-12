@@ -12,36 +12,37 @@ enum Accidental:String {
     case None = "", Natural = "nat", Sharp = "#", Flat = "b";
 }
 
+enum KeyType:String {
+    case None = "", Sharp = "sharp", Flat = "flat";
+}
+
 class MajorKeySignature{
-    let keyLetter:PitchLetter
-    let keyAccidental:Accidental
-    let isKeySharps:Bool
-    var accidentalPitchLetters:[PitchLetter]
-    var accidentals:Dictionary<Int, Accidental>
+    let keyTitleLetter:PitchLetter
+    let keyTitleType:KeyType
+    let keyType:KeyType
+    private var accidentalPitchLetters:[PitchLetter]
+    private var nonSolfegAccidentals:Dictionary<Int, Accidental>
     
-    init?(keyLetter:PitchLetter, keyAccidental:Accidental){
-        self.keyLetter = keyLetter
-        self.keyAccidental = keyAccidental
+    init?(keyTitleLetter:PitchLetter, keyTitleType:KeyType){
+        self.keyTitleLetter = keyTitleLetter
+        self.keyTitleType = keyTitleType
         self.accidentalPitchLetters = []
-        self.accidentals = Dictionary<Int, Accidental>()
+        self.nonSolfegAccidentals = Dictionary<Int, Accidental>()
         
-        if(keyLetter == PitchLetter.C){
-            self.isKeySharps = false
-        }else if((keyAccidental == Accidental.None && keyLetter != PitchLetter.F) || keyAccidental == Accidental.Sharp){
-            self.isKeySharps = true
+        if(keyTitleLetter == PitchLetter.C){
+            self.keyType = KeyType.None
+        }else if((keyTitleType == KeyType.None && keyTitleLetter != PitchLetter.F) || keyTitleType == KeyType.Sharp){
+            self.keyType = KeyType.Sharp
         }else{
-            self.isKeySharps = false
+            self.keyType = KeyType.Flat
         }
         
-        if keyAccidental == Accidental.Natural {
-            return nil
-        }
-        if (keyLetter == PitchLetter.F && keyAccidental == Accidental.Flat) ||
-            (keyLetter == PitchLetter.E && keyAccidental == Accidental.Sharp) ||
-            (keyLetter == PitchLetter.G && keyAccidental == Accidental.Sharp) ||
-            (keyLetter == PitchLetter.B && keyAccidental == Accidental.Sharp) ||
-            (keyLetter == PitchLetter.A && keyAccidental == Accidental.Sharp) ||
-            (keyLetter == PitchLetter.D && keyAccidental == Accidental.Sharp){
+        if (keyTitleLetter == PitchLetter.F && keyTitleType == KeyType.Flat) ||
+            (keyTitleLetter == PitchLetter.E && keyTitleType == KeyType.Sharp) ||
+            (keyTitleLetter == PitchLetter.G && keyTitleType == KeyType.Sharp) ||
+            (keyTitleLetter == PitchLetter.B && keyTitleType == KeyType.Sharp) ||
+            (keyTitleLetter == PitchLetter.A && keyTitleType == KeyType.Sharp) ||
+            (keyTitleLetter == PitchLetter.D && keyTitleType == KeyType.Sharp){
             return nil
         }
         
@@ -51,20 +52,20 @@ class MajorKeySignature{
     }
     
     private func populateAccidentalPitchLetters(){
-        if(keyLetter == PitchLetter.C && (keyAccidental == Accidental.None || keyAccidental == Accidental.Natural)){
+        if(keyTitleLetter == PitchLetter.C && self.keyType == KeyType.None){
             self.accidentalPitchLetters = []
         }else{
             let accidentalsInOrder:[PitchLetter]
-            var absolutePitchFromKeyLetter = lowestPitchForLetter(self.keyLetter).absolutePitch + 36 //three octaves up
-            if(self.keyAccidental == Accidental.Flat){
-                absolutePitchFromKeyLetter--
-            }else if(self.keyAccidental == Accidental.Sharp){
-                absolutePitchFromKeyLetter++
+            var absolutePitchFromKeyLetter = lowestPitchForLetter(self.keyTitleLetter).absolutePitch + 36 //three octaves up
+            if(self.keyTitleType == KeyType.Flat){
+                absolutePitchFromKeyLetter -= 1
+            }else if(self.keyTitleType == KeyType.Sharp){
+                absolutePitchFromKeyLetter += 1
             }
             let pitchFromKeyLetter = Pitch(absolutePitch: absolutePitchFromKeyLetter)
             let numFourthsFromC:Int
             let intervalDirection:IntervalDirection
-            if(isKeySharps){
+            if(self.keyType == KeyType.Sharp){
                 accidentalsInOrder = [PitchLetter.F, PitchLetter.C, PitchLetter.G, PitchLetter.D,
                     PitchLetter.A, PitchLetter.E, PitchLetter.B]
                 intervalDirection = IntervalDirection.Down
@@ -82,27 +83,27 @@ class MajorKeySignature{
         var currentPitch = Pitch.middleC
         var fourthCounter = 0
         while (currentPitch.basePitch()) != (relativePitch.basePitch()){
-            currentPitch = currentPitch.interval(Interval.PerfectFourth, intervalDirection: intervalDirection)
-            fourthCounter++
+            currentPitch = currentPitch.interval(Interval(distance:IntervalDistance.PerfectFourth, direction: intervalDirection))
+            fourthCounter += 1
         }
         return fourthCounter
     }
     
     private func populateAccidentals(){
-        var tonicPitch:Pitch = lowestPitchForLetter(self.keyLetter).interval(Interval.PerfectOctave, intervalDirection: IntervalDirection.Up)
+        var tonicPitch:Pitch = lowestPitchForLetter(self.keyTitleLetter).interval(Interval(distance:IntervalDistance.PerfectOctave, direction: IntervalDirection.Up))
         let nextPitchAccidental:Accidental
         
-        switch(self.keyAccidental){
-        case Accidental.Flat:
-            tonicPitch = tonicPitch.interval(Interval.HalfStep, intervalDirection: IntervalDirection.Down)
+        switch(self.keyTitleType){
+        case KeyType.Flat:
+            tonicPitch = tonicPitch.interval(Interval(distance:IntervalDistance.HalfStep, direction: IntervalDirection.Down))
             nextPitchAccidental = Accidental.Natural
             break
-        case Accidental.Sharp:
-            tonicPitch = tonicPitch.interval(Interval.HalfStep, intervalDirection: IntervalDirection.Up)
+        case KeyType.Sharp:
+            tonicPitch = tonicPitch.interval(Interval(distance: IntervalDistance.HalfStep, direction: IntervalDirection.Up))
             nextPitchAccidental = Accidental.Natural
             break
         default:
-            let halfStepUp:Pitch = tonicPitch.interval(Interval.HalfStep, intervalDirection: IntervalDirection.Up)
+            let halfStepUp:Pitch = tonicPitch.interval(Interval(distance: IntervalDistance.HalfStep, direction: IntervalDirection.Up))
             if Keyboard.isIvory(halfStepUp) {
                 nextPitchAccidental = Accidental.Natural
             }else{
@@ -110,35 +111,39 @@ class MajorKeySignature{
             }
             break
         }
-        self.accidentals[tonicPitch.basePitch()] = Accidental.None
-        self.accidentals[tonicPitch.interval(Interval.HalfStep, intervalDirection: IntervalDirection.Up).basePitch()]
+        self.nonSolfegAccidentals[tonicPitch.basePitch()] = Accidental.None
+        self.nonSolfegAccidentals[tonicPitch.interval(Interval(distance: IntervalDistance.HalfStep, direction: IntervalDirection.Up)).basePitch()]
             = nextPitchAccidental
         
-        let majorScaleSteps:[Interval] =
-            [Interval.WholeStep, Interval.HalfStep, Interval.WholeStep, Interval.WholeStep,
-                Interval.WholeStep, Interval.WholeStep]
+        let majorScaleSteps:[IntervalDistance] =
+            [IntervalDistance.WholeStep,
+             IntervalDistance.HalfStep,
+             IntervalDistance.WholeStep,
+             IntervalDistance.WholeStep,
+             IntervalDistance.WholeStep,
+             IntervalDistance.WholeStep]
         let possibleAccidentals = [Accidental.Flat, Accidental.None, Accidental.Sharp, Accidental.Flat, Accidental.Flat]
-        var currentPitch:Pitch = tonicPitch.interval(Interval.WholeStep, intervalDirection: IntervalDirection.Up)
+        var currentPitch:Pitch = tonicPitch.interval(Interval(distance: IntervalDistance.WholeStep, direction: IntervalDirection.Up))
         for index:Int in 0...4{
-            self.accidentals[currentPitch.basePitch()] = Accidental.None
-            let halfStepUp:Pitch = currentPitch.interval(Interval.HalfStep, intervalDirection: IntervalDirection.Up)
+            self.nonSolfegAccidentals[currentPitch.basePitch()] = Accidental.None
+            let halfStepUp:Pitch = currentPitch.interval(Interval(distance: IntervalDistance.HalfStep, direction: IntervalDirection.Up))
             if Keyboard.isIvory(halfStepUp) {
-                self.accidentals[halfStepUp.basePitch()] = Accidental.Natural
+                self.nonSolfegAccidentals[halfStepUp.basePitch()] = Accidental.Natural
             }else{
-                self.accidentals[halfStepUp.basePitch()] = possibleAccidentals[index]
+                self.nonSolfegAccidentals[halfStepUp.basePitch()] = possibleAccidentals[index]
             }
-            currentPitch = currentPitch.interval(majorScaleSteps[index], intervalDirection: IntervalDirection.Up)
+            currentPitch = currentPitch.interval(Interval(distance: majorScaleSteps[index], direction: IntervalDirection.Up))
         }
-        self.accidentals[currentPitch.basePitch()] = Accidental.None
+        self.nonSolfegAccidentals[currentPitch.basePitch()] = Accidental.None
     }
     
     func isInKey(pitch:Pitch) -> Bool{
-        return accidental(pitch) == Accidental.None;
+        return nonSolfegAccidental(pitch) == Accidental.None;
     }
     
     func nameForPitch(pitch:Pitch) -> String{
         let relativeIvory = relativeIvoryPitch(pitch)
-        let accidentalRaw = accidental(pitch).rawValue
+        let accidentalRaw = nonSolfegAccidental(pitch).rawValue
         let letter = Keyboard.letterIfIvory(relativeIvory)!
         return letter.rawValue + accidentalRaw;
     }
@@ -146,11 +151,11 @@ class MajorKeySignature{
     func relativeIvoryPitch(pitch:Pitch) -> Pitch{
         var absoluteIvoryPitch:Int = 0
         
-        switch(accidental(pitch)){
+        switch(nonSolfegAccidental(pitch)){
         case Accidental.None:
             if(Keyboard.isIvory(pitch)){
-                if(self.isKeySharps){
-                    let halfStepDown = pitch.interval(Interval.HalfStep, intervalDirection: IntervalDirection.Down)
+                if(self.keyType == KeyType.Sharp){
+                    let halfStepDown = pitch.interval(Interval(distance: IntervalDistance.HalfStep, direction: IntervalDirection.Down))
                     if(Keyboard.isIvory(halfStepDown) &&
                         self.accidentalPitchLetters.contains(Keyboard.letterIfIvory(halfStepDown)!)){
                         absoluteIvoryPitch = pitch.absolutePitch - 1
@@ -158,7 +163,7 @@ class MajorKeySignature{
                         absoluteIvoryPitch = pitch.absolutePitch
                     }
                 }else{
-                    let halfStepUp = pitch.interval(Interval.HalfStep, intervalDirection: IntervalDirection.Up)
+                    let halfStepUp = pitch.interval(Interval(distance: IntervalDistance.HalfStep, direction: IntervalDirection.Up))
                     if(Keyboard.isIvory(halfStepUp) &&
                         self.accidentalPitchLetters.contains(Keyboard.letterIfIvory(halfStepUp)!)){
                             absoluteIvoryPitch = pitch.absolutePitch + 1
@@ -167,7 +172,7 @@ class MajorKeySignature{
                     }
                 }
             }else{
-                if(isKeySharps){
+                if(self.keyType == KeyType.Sharp){
                     absoluteIvoryPitch = pitch.absolutePitch - 1
                 }else{
                     absoluteIvoryPitch = pitch.absolutePitch + 1
@@ -187,11 +192,15 @@ class MajorKeySignature{
         return Pitch(absolutePitch: absoluteIvoryPitch);
     }
     
-    func accidental(pitch:Pitch) -> Accidental{
-        return self.accidentals[pitch.basePitch()]!;
+    func nonSolfegAccidental(pitch:Pitch) -> Accidental{
+        return self.nonSolfegAccidentals[pitch.basePitch()]!;
     }
     
     func toString() -> String{
-        return self.keyLetter.rawValue + self.keyAccidental.rawValue
+        return self.keyTitleLetter.rawValue + self.keyTitleType.rawValue
+    }
+    
+    func getAccidentalPitchLetters() -> [PitchLetter]{
+        return accidentalPitchLetters
     }
 }

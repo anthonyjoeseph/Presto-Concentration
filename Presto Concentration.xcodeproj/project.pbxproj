@@ -11,28 +11,16 @@
 		95088E391C437BED009ADED7 /* KeySignatureChangingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95088E381C437BED009ADED7 /* KeySignatureChangingState.swift */; };
 		95088E3B1C437BF7009ADED7 /* TempoChangingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95088E3A1C437BF7009ADED7 /* TempoChangingState.swift */; };
 		95088E3D1C437C01009ADED7 /* NoteAndClefState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95088E3C1C437C01009ADED7 /* NoteAndClefState.swift */; };
+		95312ADE1C44C56100160912 /* GamePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95312ADD1C44C56100160912 /* GamePersistence.swift */; };
+		953A44FE1C44700400B391F1 /* silent.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 953A44FD1C44700400B391F1 /* silent.mp3 */; };
+		953A45001C4472C600B391F1 /* HighScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953A44FF1C4472C600B391F1 /* HighScoreViewController.swift */; };
 		953F12701C2F9D7A00DFA922 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F126F1C2F9D7A00DFA922 /* Keyboard.swift */; };
 		953F12721C30A85C00DFA922 /* KeySignatureSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F12711C30A85C00DFA922 /* KeySignatureSprite.swift */; };
 		953F12741C3385C600DFA922 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F12731C3385C600DFA922 /* GameModel.swift */; };
 		953F12761C33876900DFA922 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F12751C33876900DFA922 /* GameViewController.swift */; };
 		953F12781C3387A300DFA922 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F12771C3387A300DFA922 /* MainMenuViewController.swift */; };
 		953F127A1C33901900DFA922 /* TempoMarkingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953F12791C33901900DFA922 /* TempoMarkingSprite.swift */; };
-		955F01281C26173B000434AD /* AFmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01161C26173B000434AD /* AFmaj.plist */; };
-		955F01291C26173B000434AD /* Amaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01171C26173B000434AD /* Amaj.plist */; };
-		955F012B1C26173B000434AD /* BFmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01191C26173B000434AD /* BFmaj.plist */; };
-		955F012C1C26173B000434AD /* Bmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F011A1C26173B000434AD /* Bmaj.plist */; };
-		955F012E1C26173B000434AD /* Cmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F011C1C26173B000434AD /* Cmaj.plist */; };
-		955F012F1C26173B000434AD /* CSmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F011D1C26173B000434AD /* CSmaj.plist */; };
-		955F01301C26173B000434AD /* DFmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F011E1C26173B000434AD /* DFmaj.plist */; };
-		955F01311C26173B000434AD /* EFmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F011F1C26173B000434AD /* EFmaj.plist */; };
-		955F01321C26173B000434AD /* DSmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01201C26173B000434AD /* DSmaj.plist */; };
-		955F01331C26173B000434AD /* EFmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01211C26173B000434AD /* EFmaj.plist */; };
-		955F01341C26173B000434AD /* Emaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01221C26173B000434AD /* Emaj.plist */; };
-		955F01351C26173B000434AD /* Fmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01231C26173B000434AD /* Fmaj.plist */; };
-		955F01361C26173B000434AD /* FSmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01241C26173B000434AD /* FSmaj.plist */; };
-		955F01371C26173B000434AD /* GFmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01251C26173B000434AD /* GFmaj.plist */; };
-		955F01381C26173B000434AD /* Gmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01261C26173B000434AD /* Gmaj.plist */; };
-		955F01391C26173B000434AD /* GSmaj.plist in Resources */ = {isa = PBXBuildFile; fileRef = 955F01271C26173B000434AD /* GSmaj.plist */; };
+		954F214C1D0F5C1100F4430C /* Presto_ConcentrationKeySigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F214B1D0F5C1100F4430C /* Presto_ConcentrationKeySigTests.swift */; };
 		955F013B1C274300000434AD /* MajorKeySignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955F013A1C274300000434AD /* MajorKeySignature.swift */; };
 		955F013D1C28989E000434AD /* Pitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955F013C1C28989E000434AD /* Pitch.swift */; };
 		9563F68A1C435E70003130CB /* GameCountStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9563F6891C435E70003130CB /* GameCountStateMachine.swift */; };
@@ -153,28 +141,17 @@
 		95088E381C437BED009ADED7 /* KeySignatureChangingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeySignatureChangingState.swift; sourceTree = "<group>"; };
 		95088E3A1C437BF7009ADED7 /* TempoChangingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempoChangingState.swift; sourceTree = "<group>"; };
 		95088E3C1C437C01009ADED7 /* NoteAndClefState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteAndClefState.swift; sourceTree = "<group>"; };
+		95312ADD1C44C56100160912 /* GamePersistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamePersistence.swift; sourceTree = "<group>"; };
+		953A44FD1C44700400B391F1 /* silent.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = silent.mp3; sourceTree = "<group>"; };
+		953A44FF1C4472C600B391F1 /* HighScoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScoreViewController.swift; sourceTree = "<group>"; };
+		953A45011C44ACD400B391F1 /* Gotham-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Bold.ttf"; sourceTree = "<group>"; };
 		953F126F1C2F9D7A00DFA922 /* Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		953F12711C30A85C00DFA922 /* KeySignatureSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeySignatureSprite.swift; sourceTree = "<group>"; };
 		953F12731C3385C600DFA922 /* GameModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		953F12751C33876900DFA922 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		953F12771C3387A300DFA922 /* MainMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		953F12791C33901900DFA922 /* TempoMarkingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempoMarkingSprite.swift; sourceTree = "<group>"; };
-		955F01161C26173B000434AD /* AFmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AFmaj.plist; sourceTree = "<group>"; };
-		955F01171C26173B000434AD /* Amaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Amaj.plist; sourceTree = "<group>"; };
-		955F01191C26173B000434AD /* BFmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BFmaj.plist; sourceTree = "<group>"; };
-		955F011A1C26173B000434AD /* Bmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Bmaj.plist; sourceTree = "<group>"; };
-		955F011C1C26173B000434AD /* Cmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Cmaj.plist; sourceTree = "<group>"; };
-		955F011D1C26173B000434AD /* CSmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CSmaj.plist; sourceTree = "<group>"; };
-		955F011E1C26173B000434AD /* DFmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DFmaj.plist; sourceTree = "<group>"; };
-		955F011F1C26173B000434AD /* EFmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EFmaj.plist; sourceTree = "<group>"; };
-		955F01201C26173B000434AD /* DSmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DSmaj.plist; sourceTree = "<group>"; };
-		955F01211C26173B000434AD /* EFmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EFmaj.plist; sourceTree = "<group>"; };
-		955F01221C26173B000434AD /* Emaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Emaj.plist; sourceTree = "<group>"; };
-		955F01231C26173B000434AD /* Fmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Fmaj.plist; sourceTree = "<group>"; };
-		955F01241C26173B000434AD /* FSmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FSmaj.plist; sourceTree = "<group>"; };
-		955F01251C26173B000434AD /* GFmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GFmaj.plist; sourceTree = "<group>"; };
-		955F01261C26173B000434AD /* Gmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Gmaj.plist; sourceTree = "<group>"; };
-		955F01271C26173B000434AD /* GSmaj.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GSmaj.plist; sourceTree = "<group>"; };
+		954F214B1D0F5C1100F4430C /* Presto_ConcentrationKeySigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presto_ConcentrationKeySigTests.swift; sourceTree = "<group>"; };
 		955F013A1C274300000434AD /* MajorKeySignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MajorKeySignature.swift; sourceTree = "<group>"; };
 		955F013C1C28989E000434AD /* Pitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pitch.swift; sourceTree = "<group>"; };
 		9563F6891C435E70003130CB /* GameCountStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCountStateMachine.swift; sourceTree = "<group>"; };
@@ -302,15 +279,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		953A44F91C440C7700B391F1 /* Game Count State Machine */ = {
+		953A44F91C440C7700B391F1 /* Game Model */ = {
 			isa = PBXGroup;
 			children = (
+				953F12731C3385C600DFA922 /* GameModel.swift */,
 				9563F6891C435E70003130CB /* GameCountStateMachine.swift */,
 				95088E3C1C437C01009ADED7 /* NoteAndClefState.swift */,
 				95088E381C437BED009ADED7 /* KeySignatureChangingState.swift */,
 				95088E3A1C437BF7009ADED7 /* TempoChangingState.swift */,
 			);
-			name = "Game Count State Machine";
+			name = "Game Model";
 			sourceTree = "<group>";
 		};
 		953A44FA1C440C9800B391F1 /* Music Theory */ = {
@@ -326,33 +304,30 @@
 			name = "Music Theory";
 			sourceTree = "<group>";
 		};
-		955F01131C261372000434AD /* Key Signatures */ = {
+		953A44FB1C440E4200B391F1 /* SpriteKit Music */ = {
 			isa = PBXGroup;
 			children = (
-				955F01161C26173B000434AD /* AFmaj.plist */,
-				955F01171C26173B000434AD /* Amaj.plist */,
-				955F01191C26173B000434AD /* BFmaj.plist */,
-				955F011A1C26173B000434AD /* Bmaj.plist */,
-				955F011C1C26173B000434AD /* Cmaj.plist */,
-				955F011D1C26173B000434AD /* CSmaj.plist */,
-				955F011E1C26173B000434AD /* DFmaj.plist */,
-				955F011F1C26173B000434AD /* EFmaj.plist */,
-				955F01201C26173B000434AD /* DSmaj.plist */,
-				955F01211C26173B000434AD /* EFmaj.plist */,
-				955F01221C26173B000434AD /* Emaj.plist */,
-				955F01231C26173B000434AD /* Fmaj.plist */,
-				955F01241C26173B000434AD /* FSmaj.plist */,
-				955F01251C26173B000434AD /* GFmaj.plist */,
-				955F01261C26173B000434AD /* Gmaj.plist */,
-				955F01271C26173B000434AD /* GSmaj.plist */,
+				9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */,
+				958C78F61B8E534600221004 /* NoteSprite.swift */,
+				953F12711C30A85C00DFA922 /* KeySignatureSprite.swift */,
+				953F12791C33901900DFA922 /* TempoMarkingSprite.swift */,
 			);
-			path = "Key Signatures";
+			name = "SpriteKit Music";
+			sourceTree = "<group>";
+		};
+		953A44FC1C440E5F00B391F1 /* UIKit Music */ = {
+			isa = PBXGroup;
+			children = (
+				958C76E01B8E0D4200221004 /* KeyBase.swift */,
+				958C76E21B8E0EFB00221004 /* KeyboardView.swift */,
+			);
+			name = "UIKit Music";
 			sourceTree = "<group>";
 		};
 		958C76E61B8E509200221004 /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				955F01131C261372000434AD /* Key Signatures */,
+				953A44FD1C44700400B391F1 /* silent.mp3 */,
 				95EF51851C3DB36300F7ED14 /* pianoAudio */,
 			);
 			path = resources;
@@ -458,6 +433,7 @@
 		95F05B7D1B85073D0022F04C = {
 			isa = PBXGroup;
 			children = (
+				953A45011C44ACD400B391F1 /* Gotham-Bold.ttf */,
 				95F05B881B85073D0022F04C /* Presto Concentration */,
 				95F05B9E1B85073D0022F04C /* Presto ConcentrationTests */,
 				95F05B871B85073D0022F04C /* Products */,
@@ -479,15 +455,12 @@
 				95F05B8B1B85073D0022F04C /* AppDelegate.swift */,
 				953F12771C3387A300DFA922 /* MainMenuViewController.swift */,
 				953F12751C33876900DFA922 /* GameViewController.swift */,
-				953F12731C3385C600DFA922 /* GameModel.swift */,
-				953A44F91C440C7700B391F1 /* Game Count State Machine */,
-				9500E3DD1B8DFE410037973F /* AnimatedStaff.swift */,
-				958C78F61B8E534600221004 /* NoteSprite.swift */,
-				953F12711C30A85C00DFA922 /* KeySignatureSprite.swift */,
-				953F12791C33901900DFA922 /* TempoMarkingSprite.swift */,
+				953A44FF1C4472C600B391F1 /* HighScoreViewController.swift */,
+				95312ADD1C44C56100160912 /* GamePersistence.swift */,
+				953A44F91C440C7700B391F1 /* Game Model */,
+				953A44FB1C440E4200B391F1 /* SpriteKit Music */,
+				953A44FC1C440E5F00B391F1 /* UIKit Music */,
 				953A44FA1C440C9800B391F1 /* Music Theory */,
-				958C76E01B8E0D4200221004 /* KeyBase.swift */,
-				958C76E21B8E0EFB00221004 /* KeyboardView.swift */,
 				95F05B8F1B85073D0022F04C /* Main.storyboard */,
 				95F05B921B85073D0022F04C /* Images.xcassets */,
 				95F05B941B85073D0022F04C /* LaunchScreen.xib */,
@@ -509,6 +482,7 @@
 			isa = PBXGroup;
 			children = (
 				95F05BA11B85073D0022F04C /* Presto_ConcentrationTests.swift */,
+				954F214B1D0F5C1100F4430C /* Presto_ConcentrationKeySigTests.swift */,
 				95F05B9F1B85073D0022F04C /* Supporting Files */,
 			);
 			path = "Presto ConcentrationTests";
@@ -573,6 +547,7 @@
 				TargetAttributes = {
 					95F05B851B85073D0022F04C = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 8T97CQ8969;
 					};
 					95F05B9A1B85073D0022F04C = {
 						CreatedOnToolsVersion = 6.4;
@@ -604,14 +579,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				955F01351C26173B000434AD /* Fmaj.plist in Resources */,
 				95EF52241C3DB36300F7ED14 /* 71.aif in Resources */,
 				95EF52281C3DB36300F7ED14 /* 75.aif in Resources */,
 				95EF52121C3DB36300F7ED14 /* 55.aif in Resources */,
 				95EF51F91C3DB36300F7ED14 /* 32.aif in Resources */,
-				955F012E1C26173B000434AD /* Cmaj.plist in Resources */,
 				95EF52051C3DB36300F7ED14 /* 43.aif in Resources */,
-				955F01281C26173B000434AD /* AFmaj.plist in Resources */,
 				95EF52181C3DB36300F7ED14 /* 60.aif in Resources */,
 				95EF52071C3DB36300F7ED14 /* 45.aif in Resources */,
 				95EF51E01C3DB36300F7ED14 /* 1.aif in Resources */,
@@ -629,26 +601,21 @@
 				95EF521A1C3DB36300F7ED14 /* 62.aif in Resources */,
 				95EF51FB1C3DB36300F7ED14 /* 34.aif in Resources */,
 				95EF522C1C3DB36300F7ED14 /* 79.aif in Resources */,
-				955F01371C26173B000434AD /* GFmaj.plist in Resources */,
 				95EF52151C3DB36300F7ED14 /* 58.aif in Resources */,
 				95EF51F51C3DB36300F7ED14 /* 29.aif in Resources */,
 				95EF51E71C3DB36300F7ED14 /* 16.aif in Resources */,
 				95EF520B1C3DB36300F7ED14 /* 49.aif in Resources */,
 				95EF51EA1C3DB36300F7ED14 /* 19.aif in Resources */,
 				95EF520E1C3DB36300F7ED14 /* 51.aif in Resources */,
-				955F01321C26173B000434AD /* DSmaj.plist in Resources */,
 				95EF52231C3DB36300F7ED14 /* 70.aif in Resources */,
 				95EF52131C3DB36300F7ED14 /* 56.aif in Resources */,
 				95EF52341C3DB36300F7ED14 /* 86.aif in Resources */,
 				95EF51E61C3DB36300F7ED14 /* 15.aif in Resources */,
-				955F01381C26173B000434AD /* Gmaj.plist in Resources */,
 				95EF52091C3DB36300F7ED14 /* 47.aif in Resources */,
 				95EF52061C3DB36300F7ED14 /* 44.aif in Resources */,
-				955F01291C26173B000434AD /* Amaj.plist in Resources */,
 				95EF52351C3DB36300F7ED14 /* 87.aif in Resources */,
 				95EF52251C3DB36300F7ED14 /* 72.aif in Resources */,
 				95EF52221C3DB36300F7ED14 /* 7.aif in Resources */,
-				955F012B1C26173B000434AD /* BFmaj.plist in Resources */,
 				95EF522A1C3DB36300F7ED14 /* 77.aif in Resources */,
 				95F05B911B85073D0022F04C /* Main.storyboard in Resources */,
 				95EF520A1C3DB36300F7ED14 /* 48.aif in Resources */,
@@ -659,12 +626,9 @@
 				95EF51E11C3DB36300F7ED14 /* 10.aif in Resources */,
 				95EF51E51C3DB36300F7ED14 /* 14.aif in Resources */,
 				95EF521F1C3DB36300F7ED14 /* 67.aif in Resources */,
-				955F01341C26173B000434AD /* Emaj.plist in Resources */,
 				95EF521E1C3DB36300F7ED14 /* 66.aif in Resources */,
 				95EF51F61C3DB36300F7ED14 /* 3.aif in Resources */,
 				95EF52211C3DB36300F7ED14 /* 69.aif in Resources */,
-				955F012F1C26173B000434AD /* CSmaj.plist in Resources */,
-				955F01301C26173B000434AD /* DFmaj.plist in Resources */,
 				95EF52261C3DB36300F7ED14 /* 73.aif in Resources */,
 				95EF521B1C3DB36300F7ED14 /* 63.aif in Resources */,
 				95EF52021C3DB36300F7ED14 /* 40.aif in Resources */,
@@ -683,19 +647,16 @@
 				95EF51F41C3DB36300F7ED14 /* 28.aif in Resources */,
 				95EF52011C3DB36300F7ED14 /* 4.aif in Resources */,
 				95EF51EB1C3DB36300F7ED14 /* 2.aif in Resources */,
-				955F012C1C26173B000434AD /* Bmaj.plist in Resources */,
 				95EF51F01C3DB36300F7ED14 /* 24.aif in Resources */,
 				95EF51F21C3DB36300F7ED14 /* 26.aif in Resources */,
 				95EF51FD1C3DB36300F7ED14 /* 36.aif in Resources */,
 				95EF520C1C3DB36300F7ED14 /* 5.aif in Resources */,
 				95EF51F71C3DB36300F7ED14 /* 30.aif in Resources */,
-				955F01391C26173B000434AD /* GSmaj.plist in Resources */,
 				95EF51FF1C3DB36300F7ED14 /* 38.aif in Resources */,
 				95EF51EE1C3DB36300F7ED14 /* 22.aif in Resources */,
 				95EF521D1C3DB36300F7ED14 /* 65.aif in Resources */,
 				95EF51E21C3DB36300F7ED14 /* 11.aif in Resources */,
 				95EF52081C3DB36300F7ED14 /* 46.aif in Resources */,
-				955F01311C26173B000434AD /* EFmaj.plist in Resources */,
 				95EF52191C3DB36300F7ED14 /* 61.aif in Resources */,
 				95EF522F1C3DB36300F7ED14 /* 81.aif in Resources */,
 				95EF51E81C3DB36300F7ED14 /* 17.aif in Resources */,
@@ -703,11 +664,10 @@
 				95EF52141C3DB36300F7ED14 /* 57.aif in Resources */,
 				95EF52291C3DB36300F7ED14 /* 76.aif in Resources */,
 				95EF52161C3DB36300F7ED14 /* 59.aif in Resources */,
-				955F01331C26173B000434AD /* EFmaj.plist in Resources */,
-				955F01361C26173B000434AD /* FSmaj.plist in Resources */,
 				95EF51F11C3DB36300F7ED14 /* 25.aif in Resources */,
 				95F05B961B85073D0022F04C /* LaunchScreen.xib in Resources */,
 				95EF52111C3DB36300F7ED14 /* 54.aif in Resources */,
+				953A44FE1C44700400B391F1 /* silent.mp3 in Resources */,
 				95F05B931B85073D0022F04C /* Images.xcassets in Resources */,
 				95EF51E31C3DB36300F7ED14 /* 12.aif in Resources */,
 				95EF51FA1C3DB36300F7ED14 /* 33.aif in Resources */,
@@ -737,10 +697,12 @@
 				953F12741C3385C600DFA922 /* GameModel.swift in Sources */,
 				953F12701C2F9D7A00DFA922 /* Keyboard.swift in Sources */,
 				953F12781C3387A300DFA922 /* MainMenuViewController.swift in Sources */,
+				953A45001C4472C600B391F1 /* HighScoreViewController.swift in Sources */,
 				958C76E31B8E0EFB00221004 /* KeyboardView.swift in Sources */,
 				953F127A1C33901900DFA922 /* TempoMarkingSprite.swift in Sources */,
 				953F12721C30A85C00DFA922 /* KeySignatureSprite.swift in Sources */,
 				958C76E11B8E0D4200221004 /* KeyBase.swift in Sources */,
+				95312ADE1C44C56100160912 /* GamePersistence.swift in Sources */,
 				953F12761C33876900DFA922 /* GameViewController.swift in Sources */,
 				95088E3D1C437C01009ADED7 /* NoteAndClefState.swift in Sources */,
 				958C76D01B8E09FD00221004 /* Note.swift in Sources */,
@@ -756,6 +718,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				954F214C1D0F5C1100F4430C /* Presto_ConcentrationKeySigTests.swift in Sources */,
 				95F05BA21B85073D0022F04C /* Presto_ConcentrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -878,10 +841,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Presto Concentration/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Deadly-Octopus.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -889,10 +855,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Presto Concentration/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Deadly-Octopus.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

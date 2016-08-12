@@ -19,7 +19,7 @@ class KeyRange:NSObject {
             let newPitch = Pitch(absolutePitch:currentAbsPitch)
             pitches.append(newPitch)
             if(Keyboard.isIvory(newPitch)){
-                numIvoryKeysMutable++
+                numIvoryKeysMutable += 1
             }
         }
         numIvoryKeys = numIvoryKeysMutable
@@ -44,7 +44,7 @@ class KeyRange:NSObject {
                         let currentPitchIndex = currentPitchAbs - lowPitch.absolutePitch
                         let currentPitch:Pitch = self.pitches[currentPitchIndex]
                         if Keyboard.isIvory(currentPitch){
-                            ivoryPitchCount++
+                            ivoryPitchCount += 1
                         }
                     }
                 }
